@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-#include "./basicStructures.h";
+#include "./lib/basicStructures.h"
 
 #include "./view/intro.h"
 #include "./view/game.h"
