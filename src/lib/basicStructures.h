@@ -1,3 +1,9 @@
+enum basicStructures_screen { 
+    intro, 
+    game, 
+    afterGame 
+};
+
 struct{
     int x;
     int y;
