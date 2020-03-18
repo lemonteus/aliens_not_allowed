@@ -1,31 +1,33 @@
+#pragma once
+
 enum basicStructures_screen { 
     intro, 
     game, 
-    afterGame 
+    afterGame
 };
 
-struct{
+typedef struct{
     int x;
     int y;
-} typedef Vector2D;
+} Vector2D;
 
-struct{
+typedef struct{
     int x;
     int y;
     int z;
-} typedef Vector3D;
+} Vector3D;
 
-struct{
+typedef struct{
     Vector2D position;
     Vector2D dimensions;
     int texture;
-} typedef Sprite;
+} Sprite;
 
-struct{
+typedef struct{
     Vector2D position;
     Vector2D dimensions;
     int texture;
     int currentFrame;
     int numberOfFrames; // created to use less than 30FPS sprites
     int framsSequesnce [30];
-} typedef AnimatedSprite;
+} AnimatedSprite;
