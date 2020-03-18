@@ -6,5 +6,7 @@ bool game_finalStatus = false;
 
 void game_drawScene();
 void game_pressedKey(unsigned char key, int x, int y);
+
 bool game_gameOver();
 
+bool projectileHitTargetRectangle(Vector2D projectilePosition, Vector2D targetBottomRight, Vector2D targetDimensions);
