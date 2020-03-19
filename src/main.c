@@ -82,7 +82,7 @@ void reshape(int width, int height){
             Biggest possible square: 400:400
                 x = (800-400/2) = 200
 
-    The last two values are the size of screen to be drawn. It needs to bem the biggest square possible
+    The last two values are the size of screen to be drawn. It needs to be the biggest square possible
     */
     glViewport((width-squareSize)/2, (height-squareSize)/2, squareSize, squareSize);
 
