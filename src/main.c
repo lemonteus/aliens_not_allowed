@@ -1,72 +1,23 @@
+#include <stdbool.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
 #include "./lib/basicStructures.h"
-
 /*
 // Scenes
 #include "./view/intro.h"
 #include "./view/game.h"
 #include "./view/afterGame.h"
 */
-
 #define min(x,y) ((x) < (y) ? (x) : (y))
 
 enum basicStructures_screen main_screenDef = intro;
+bool main_startNewGame = true;
 
 void initialize(){
     glClearColor(1.0, 1.0, 1.0, 0.0);
     main_screenDef = intro;
-}
-
-void drawScene(){
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    /*
-    switch (main_screenDef){
-    case intro:
-        //intro_drawScene();
-        break;
-    case game:
-        //game_drawScene();
-        break;
-    case afterGame:
-        //afterGame_drawScene(game_finalStatus);
-        break;
-    default:
-        break;
-    }
-    glutSwapBuffers();
-    */
-    
-    glColor3f(1.0, 1.0, 1.0);
-    glBegin(GL_TRIANGLE_FAN);
-        // desenhando o maior quadrado BRANCO possivel
-        glVertex3f(-1000, 1000, 0.0);
-        glVertex3f(-1000, -1000, 0.0);
-        glVertex3f(1000, -1000, 0.0);
-        glVertex3f(1000, 1000, 0.0);
-    glEnd();
-
-    glFlush();
-    
-}
-
-void pressedKey(unsigned char key, int x, int y){
-    switch (main_screenDef){
-    case intro:
-        //intro_pressedKey(key, x, y);
-        break;
-    case game:
-        //game_pressedKey(key, x, y);
-        break;
-    case afterGame:
-        //afterGame_pressedKey(key, x, y);
-        break;
-    default:
-        break;
-    }
+    main_startNewGame = false;
 }
 
 void reshape(int width, int height){
@@ -96,6 +47,72 @@ void reshape(int width, int height){
     glLoadIdentity();
 }
 
+void drawScene(){
+    glClearColor(0, 0, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    // &main_screenDef as parameter to enable switch between scenes
+    // &main_startNewGame as parameter to choose between create and continue games
+    switch (main_screenDef){ 
+    case intro:
+        //intro_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
+        break;
+    case game:
+        //game_drawScene(&main_screenDef, &main_startNewGame);
+        break;
+    case afterGame:
+        //afterGame_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
+        break;
+    default:
+        break;
+    }
+    glutSwapBuffers();
+    
+    /*
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_TRIANGLE_FAN);
+        // desenhando o maior quadrado BRANCO possivel
+        glVertex3f(-1000, 1000, 0.0);
+        glVertex3f(-1000, -1000, 0.0);
+        glVertex3f(1000, -1000, 0.0);
+        glVertex3f(1000, 1000, 0.0);
+    glEnd();
+    glFlush();
+    */
+}
+
+void pressedKey(unsigned char key, int x, int y){
+    switch (main_screenDef){
+    case intro:
+        //intro_pressedKey(key, x, y);
+        break;
+    case game:
+        //game_pressedKey(key, x, y);
+        break;
+    case afterGame:
+        //afterGame_pressedKey(key, x, y);
+        break;
+    default:
+        break;
+    }
+}
+
+void mouseGestures(int button, int state, int x, int y){
+    switch (main_screenDef){
+    case intro:
+        //intro_mouseGestures(button, state, x, y);
+        break;
+    case game:
+        //game_mouseGestures(button, state, x, y);
+        break;
+    case afterGame:
+        //afterGame_mouseGestures(button, state, x, y);
+        break;
+    default:
+        break;
+    }
+}
+
 int main(int argc, char **argv){
     glutInit(&argc, argv);
 
@@ -111,6 +128,7 @@ int main(int argc, char **argv){
     glutDisplayFunc(drawScene);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(pressedKey);
+    glutMouseFunc(mouseGestures);
 
     initialize();
 
