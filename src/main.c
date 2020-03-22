@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+//#include <SOIL/SOIL.h>
 
 #include "./lib/basicStructures.h"
 /*
@@ -10,6 +11,8 @@
 #include "./view/afterGame.h"
 */
 #define min(x,y) ((x) < (y) ? (x) : (y))
+
+//GLint viewList[10]; //temporary placeholder for texture view lists
 
 enum basicStructures_screen main_screenDef = intro;
 bool main_startNewGame = true;

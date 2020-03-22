@@ -1,4 +1,5 @@
 #pragma once
+#include "basicStructures.h"
 
 struct{
     unsigned int healthPoints;

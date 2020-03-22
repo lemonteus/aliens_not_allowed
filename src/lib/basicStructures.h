@@ -20,14 +20,17 @@ typedef struct{
 typedef struct{
     Vector2D position;
     Vector2D dimensions;
-    int texture;
-} Sprite;
+} Entity;
 
 typedef struct{
     Vector2D position;
     Vector2D dimensions;
     int texture;
+} Sprite;
+
+typedef struct{
+    Entity hitbox;
     int currentFrame;
     int numberOfFrames; // created to use less than 30FPS sprites
-    int framsSequesnce [30];
+    int frameSequesnce [30];
 } AnimatedSprite;
