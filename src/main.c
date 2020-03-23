@@ -6,15 +6,20 @@
 #include <SOIL/SOIL.h>
 
 #include "./lib/basicStructures.h"
-/*
+#include "./lib/player.h"
+
 // Scenes
-#include "./view/intro.h"
+//#include "./view/intro.h"
 #include "./view/game.h"
-#include "./view/afterGame.h"
-*/
+//#include "./view/afterGame.h"
+
 #define min(x,y) ((x) < (y) ? (x) : (y))
+#define PLAYER_INITIAL_Y_POS 350
 
 GLint viewList[10]; //temporary placeholder for texture view lists, no support for animated sprites yet
+
+Player player;
+int a = 10;
 
 enum basicStructures_screen main_screenDef = intro;
 bool main_startNewGame = true;
@@ -39,6 +44,8 @@ void initialize(){
     //enabling support for texture transparency
     glEnable(GL_BLEND );
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, viewList[0]);
 
     //main_screenDef = intro;
     main_screenDef = game; //I JUST CHANGED THIS TO TEST IF LOADING SPRITES IS WORKING
@@ -95,13 +102,16 @@ void drawScene(){
         glEnd();
 
         //player
+        //printf("%d", player.sprite.position.x);
+
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, viewList[0]);
-        glBegin(GL_TRIANGLE_FAN);
-            glTexCoord2f(0, 0); glVertex3f(-50, -400,  0);
-            glTexCoord2f(1, 0); glVertex3f( 50, -400,  0);
-            glTexCoord2f(1, 1); glVertex3f( 50,  -300,  0);
-            glTexCoord2f(0, 1); glVertex3f(-50,  -300,  0);
+
+        glBegin(GL_POLYGON);
+            glTexCoord2f(0, 1); glVertex3f(-(getPlayerDimensionX()) + getPlayerPositionX(&player), (getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
+            glTexCoord2f(1, 1); glVertex3f( getPlayerDimensionX() + getPlayerPositionX(&player), (getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
+            glTexCoord2f(1, 0); glVertex3f( getPlayerDimensionX() + getPlayerPositionX(&player),  (-getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
+            glTexCoord2f(0, 0); glVertex3f(-(getPlayerDimensionX()) + getPlayerPositionX(&player),  (-getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
         glEnd();
         glDisable(GL_TEXTURE_2D);
 
@@ -133,7 +143,8 @@ void pressedKey(unsigned char key, int x, int y){
         //intro_pressedKey(key, x, y);
         break;
     case game:
-        //game_pressedKey(key, x, y);
+        game_pressedKey(key, x, y, &player);
+        glutPostRedisplay();
         break;
     case afterGame:
         //afterGame_pressedKey(key, x, y);
@@ -141,6 +152,8 @@ void pressedKey(unsigned char key, int x, int y){
     default:
         break;
     }
+
+    //glutPostRedisplay();
 }
 
 void mouseGestures(int button, int state, int x, int y){

@@ -1,9 +1,45 @@
 #include "player.h"
 
+#define PLAYER_DIMENSIONS_X 50
+#define PLAYER_DIMENSIONS_Y 79
+
+int getPlayerDimensionX ()
+{
+    return PLAYER_DIMENSIONS_X;
+}
+
+int getPlayerDimensionY ()
+{
+    return PLAYER_DIMENSIONS_Y;
+}
+
+int getPlayerPositionX(Player *player)
+{
+    return player->sprite.position.x;
+}
+
+int getPlayerPositionY(Player *player)
+{
+    return player->sprite.position.y;
+}
+
+void player_modifyPositionX(Player *player, int amount)
+{
+    player->sprite.position.x += amount;
+}
+
+void player_modifyPositionY(Player *player, int amount)
+{
+    player->sprite.position.y += amount;
+}
+
 void player_initialize(Player *player, int positionX, int positionY, int viewListNumber)
 {
     player->sprite.position.x = positionX;
     player->sprite.position.y = positionY;
+
+    player->sprite.dimensions.x = PLAYER_DIMENSIONS_X;
+    player->sprite.dimensions.y = PLAYER_DIMENSIONS_Y;
 
     player->sprite.texture = viewListNumber;
     player->healthPoints = 5; //temporary
