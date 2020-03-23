@@ -98,10 +98,10 @@ void drawScene(){
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, viewList[0]);
         glBegin(GL_TRIANGLE_FAN);
-            glTexCoord2f(0, 0); glVertex3f(-50, -50,  0);
-            glTexCoord2f(1, 0); glVertex3f( 50, -50,  0);
-            glTexCoord2f(1, 1); glVertex3f( 50,  50,  0);
-            glTexCoord2f(0, 1); glVertex3f(-50,  50,  0);
+            glTexCoord2f(0, 0); glVertex3f(-50, -400,  0);
+            glTexCoord2f(1, 0); glVertex3f( 50, -400,  0);
+            glTexCoord2f(1, 1); glVertex3f( 50,  -300,  0);
+            glTexCoord2f(0, 1); glVertex3f(-50,  -300,  0);
         glEnd();
         glDisable(GL_TEXTURE_2D);
 
@@ -165,7 +165,7 @@ int main(int argc, char **argv){
     glutInitContextVersion(1, 1); 
     glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
-    glutInitDisplayMode( GLUT_SINGLE | GLUT_RGBA );
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA );
     glutInitWindowSize( 400, 400 );
     glutInitWindowPosition( 50, 50 );
 
