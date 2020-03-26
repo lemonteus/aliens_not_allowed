@@ -1,7 +1,11 @@
+#include <stdbool.h>
+#include <stdio.h>
+
 #include "player.h"
 
 #define PLAYER_DIMENSIONS_X 50
 #define PLAYER_DIMENSIONS_Y 79
+#define PLAYER_SPEED 10
 
 int getPlayerDimensionX ()
 {
@@ -38,6 +42,9 @@ void player_initialize(Player *player, int positionX, int positionY, int viewLis
     player->sprite.position.x = positionX;
     player->sprite.position.y = positionY;
 
+    player->isMoving = false;
+    player->speed = PLAYER_SPEED;
+
     player->sprite.dimensions.x = PLAYER_DIMENSIONS_X;
     player->sprite.dimensions.y = PLAYER_DIMENSIONS_Y;
 
@@ -46,6 +53,27 @@ void player_initialize(Player *player, int positionX, int positionY, int viewLis
     player->attackPoints = 1; //temporary
 
 }
+
+void player_moveLeft(Player* player)
+{
+    /*if (!player->isMoving)
+        player->isMoving = true;
+
+    while(player->isMoving)
+    */
+        player_modifyPositionX(player, -player->speed);
+}
+
+void player_moveRight(Player* player)
+{
+    player_modifyPositionX(player, player->speed);
+}
+
+void player_stopMoving (Player* player)
+{
+    player->isMoving = false;
+}
+
 
 void player_modifyHP(int points, Player *player)
 {

@@ -19,20 +19,63 @@ bool projectileHitTargetRectangle(Vector2D projectilePosition, Vector2D targetBo
     return false;
 }
 
-void game_pressedKey(unsigned char key, int x, int y, Player* player)
+void game_keyDown(unsigned char key, int x, int y, Player* player)
 {
     switch (key)
     {
         case 'A':
         case 'a':
         //printf("%d", player->sprite.position.x);
-            player_modifyPositionX(player, -10);
+            player_moveLeft(player);
             break;
 
         case 'D':
         case 'd':
             //printf("%d", player->sprite.position.x);
-            player_modifyPositionX(player, +10);
+            player_moveRight(player);
+            break;
+            
+    }
+}
+
+void game_keyUp(unsigned char key, int x, int y, Player* player)
+{
+    switch (key)
+    {
+        case 'A':
+        case 'a':
+        case 'D':
+        case 'd':
+            player_stopMoving(player);
+            break;
+    }
+}
+
+
+void game_specialKeyDown(int key, int x, int y, Player* player)
+{
+    switch (key)
+    {
+        case 102: //direita
+        printf("%d, ", key);
+            player_moveRight(player);
+            break;
+
+        case 100: //esquerda
+            printf("%d, ", key);
+            player_moveLeft(player);
+            break;
+    }
+}
+
+void game_specialKeyUp(int key, int x, int y, Player* player)
+{
+    switch (key)
+    {
+        case 102: //direita
+        case 100: //esquerda
+            player_stopMoving(player);
+            printf("a");
             break;
     }
 }

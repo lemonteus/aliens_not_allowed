@@ -19,7 +19,6 @@
 GLint viewList[10]; //temporary placeholder for texture view lists, no support for animated sprites yet
 
 Player player;
-int a = 10;
 
 enum basicStructures_screen main_screenDef = intro;
 bool main_startNewGame = true;
@@ -137,13 +136,13 @@ void drawScene(){
     */
 }
 
-void pressedKey(unsigned char key, int x, int y){
+void keyDown (unsigned char key, int x, int y){
     switch (main_screenDef){
     case intro:
         //intro_pressedKey(key, x, y);
         break;
     case game:
-        game_pressedKey(key, x, y, &player);
+        game_keyDown(key, x, y, &player);
         glutPostRedisplay();
         break;
     case afterGame:
@@ -154,6 +153,35 @@ void pressedKey(unsigned char key, int x, int y){
     }
 
     //glutPostRedisplay();
+}
+
+void keyUp (unsigned char key, int x, int y)
+{
+    switch(main_screenDef)
+    {
+        case game:
+            game_keyUp(key, x, y, &player);
+    }
+}
+
+void specialKeyDown (int key, int x, int y)
+{
+    switch(main_screenDef)
+    {
+        case game:
+            game_specialKeyDown(key, x, y, &player);
+            glutPostRedisplay();
+    }
+}
+
+
+void specialKeyUp (int key, int x, int y)
+{
+    switch(main_screenDef)
+    {
+        case game:
+            game_specialKeyUp(key, x, y, &player);
+    }
 }
 
 void mouseGestures(int button, int state, int x, int y){
@@ -186,7 +214,14 @@ int main(int argc, char **argv){
 
     glutDisplayFunc(drawScene);
     glutReshapeFunc(reshape);
-    glutKeyboardFunc(pressedKey);
+
+    glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_ON); //evitar chamadas sucessivas ao apertar e segurar uma tecla
+
+    glutKeyboardFunc(keyDown);
+    glutKeyboardUpFunc(keyUp);
+    glutSpecialFunc(specialKeyDown);
+    glutSpecialUpFunc(specialKeyUp);
+
     glutMouseFunc(mouseGestures);
 
     initialize();
