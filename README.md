@@ -7,10 +7,9 @@ A game developed with [OpenGL](https://www.opengl.org/), [Freeglut](http://freeg
 ## Setting Up Environment (Ubuntu based) :
 To run and edit this project is necessary to install the following resources:
 - FreeGlut: `sudo apt-get install freeglut3` and `sudo apt-get install freeglut3-dev`
-- G++: `sudo apt install g++`
+- GCC: `sudo apt install gcc`
 - GLEW: `sudo apt install libglew`
 - SOIL: `sudo apt install libsoil-dev`
-- GLFW: `sudo apt install libglfw` and `sudo apt install libglfw-dev`
 
 ## Credits:
 - Developers: [Pedro Vaz](github.com/holoVaz) and [Mateus Lemos](https://github.com/lemonteus)
