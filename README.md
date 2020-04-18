@@ -12,5 +12,5 @@ To run and edit this project is necessary to install the following resources:
 - SOIL: `sudo apt install libsoil-dev`
 
 ## Credits:
-- Developers: [Pedro Vaz](github.com/holoVaz) and [Mateus Lemos](https://github.com/lemonteus)
+- Developers: [Pedro Vaz](https://github.com/holoVaz) and [Mateus Lemos](https://github.com/lemonteus)
 - Teacher/Mentor: [Flávio Coutinho](https://github.com/fegemo)  
