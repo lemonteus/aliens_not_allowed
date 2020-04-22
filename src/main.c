@@ -12,37 +12,28 @@
 #include "./view/game.h"
 #include "./view/afterGame.h"
 
+//Handling textures
+#include "./view/texture.h"
+
+
 #define min(x,y) ((x) < (y) ? (x) : (y))
 #define PLAYER_INITIAL_Y_POS 350
-
-GLint viewList[10];
 
 Player player;
 
 enum basicStructures_screen main_screenDef = intro;
 bool main_startNewGame = true;
 
-GLint loadTexture (char* filename)
-{
-    GLuint idTextura = SOIL_load_OGL_texture(filename, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-    
-    if (idTextura == 0) {
-        printf("Erro carregando a textura: '%s'\n", SOIL_last_result());
-    }
-
-    return idTextura;
-}
-
 void initialize(){
     
-    viewList[0] = loadTexture("./view/sprites/game/player/idle/cuphead_idle_0001.png");
     glClearColor(1.0, 1.0, 1.0, 0.0);
     
     //enabling support for texture transparency
     glEnable(GL_BLEND );
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, viewList[0]);
+    //newViewList("insert_player_texture_path_here.png");
+    player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getViewList(0));
 
     main_screenDef = intro;
 
