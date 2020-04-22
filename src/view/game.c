@@ -25,13 +25,11 @@ void game_keyDown(unsigned char key, int x, int y, Player* player)
     {
         case 'A':
         case 'a':
-        //printf("%d", player->sprite.position.x);
             player_moveLeft(player);
             break;
 
         case 'D':
         case 'd':
-            //printf("%d", player->sprite.position.x);
             player_moveRight(player);
             break;
             
@@ -56,13 +54,11 @@ void game_specialKeyDown(int key, int x, int y, Player* player)
 {
     switch (key)
     {
-        case 102: //direita
-        printf("%d, ", key);
+        case 102: //right
             player_moveRight(player);
             break;
 
-        case 100: //esquerda
-            printf("%d, ", key);
+        case 100: //left
             player_moveLeft(player);
             break;
     }
@@ -72,10 +68,9 @@ void game_specialKeyUp(int key, int x, int y, Player* player)
 {
     switch (key)
     {
-        case 102: //direita
-        case 100: //esquerda
+        case 102: //right
+        case 100: //left
             player_stopMoving(player);
-            printf("a");
             break;
     }
 }

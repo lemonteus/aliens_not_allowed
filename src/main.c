@@ -1,4 +1,3 @@
-#include <stdio.h> //keeping this included for debugging purposes later
 #include <stdbool.h>
 
 #include <GL/glew.h>
@@ -9,21 +8,20 @@
 #include "./lib/player.h"
 
 // Scenes
-//#include "./view/intro.h"
+#include "./view/intro.h"
 #include "./view/game.h"
-//#include "./view/afterGame.h"
+#include "./view/afterGame.h"
 
 #define min(x,y) ((x) < (y) ? (x) : (y))
 #define PLAYER_INITIAL_Y_POS 350
 
-GLint viewList[10]; //temporary placeholder for texture view lists, no support for animated sprites yet
+GLint viewList[10];
 
 Player player;
 
 enum basicStructures_screen main_screenDef = intro;
 bool main_startNewGame = true;
 
-//temporary location
 GLint loadTexture (char* filename)
 {
     GLuint idTextura = SOIL_load_OGL_texture(filename, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
@@ -46,8 +44,7 @@ void initialize(){
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, viewList[0]);
 
-    //main_screenDef = intro;
-    main_screenDef = game; //I JUST CHANGED THIS TO TEST IF LOADING SPRITES IS WORKING
+    main_screenDef = intro;
 
     main_startNewGame = false;
 }
@@ -92,17 +89,7 @@ void drawScene(){
     case game:
         //game_drawScene(&main_screenDef, &main_startNewGame);
 
-        //temporary background (would like to have a separate method to handle backgrounds later)
-        glBegin(GL_TRIANGLE_FAN);
-            glVertex3f(-500, -500,  0);
-            glVertex3f(500,-500,  0);
-            glVertex3f(500, 500,  0);
-            glVertex3f(-500,  500,  0);
-        glEnd();
-
         //player
-        //printf("%d", player.sprite.position.x);
-
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, viewList[0]);
 
@@ -122,18 +109,6 @@ void drawScene(){
         break;
     }
     glutSwapBuffers();
-    
-    /*
-    glColor3f(1.0, 1.0, 1.0);
-    glBegin(GL_TRIANGLE_FAN);
-        // desenhando o maior quadrado BRANCO possivel
-        glVertex3f(-1000, 1000, 0.0);
-        glVertex3f(-1000, -1000, 0.0);
-        glVertex3f(1000, -1000, 0.0);
-        glVertex3f(1000, 1000, 0.0);
-    glEnd();
-    glFlush();
-    */
 }
 
 void keyDown (unsigned char key, int x, int y){
@@ -143,7 +118,6 @@ void keyDown (unsigned char key, int x, int y){
         break;
     case game:
         game_keyDown(key, x, y, &player);
-        glutPostRedisplay();
         break;
     case afterGame:
         //afterGame_pressedKey(key, x, y);
@@ -152,7 +126,6 @@ void keyDown (unsigned char key, int x, int y){
         break;
     }
 
-    //glutPostRedisplay();
 }
 
 void keyUp (unsigned char key, int x, int y)
@@ -170,7 +143,6 @@ void specialKeyDown (int key, int x, int y)
     {
         case game:
             game_specialKeyDown(key, x, y, &player);
-            glutPostRedisplay();
     }
 }
 
@@ -215,7 +187,7 @@ int main(int argc, char **argv){
     glutDisplayFunc(drawScene);
     glutReshapeFunc(reshape);
 
-    glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_ON); //evitar chamadas sucessivas ao apertar e segurar uma tecla
+    glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_ON); //avoid successive calls to a function whenever a key is pressed and held
 
     glutKeyboardFunc(keyDown);
     glutKeyboardUpFunc(keyUp);
