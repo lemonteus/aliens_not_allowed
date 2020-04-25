@@ -1,9 +1,11 @@
 // montar o ifndef
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
 #include <SOIL/SOIL.h>
 #include <GL/glew.h>
-#include <stdio.h>
-#include <stdbool.h>
 
 #include "../lib/basicStructures.h";
 
@@ -17,7 +19,8 @@ bool intro_reset = true;
 
 typedef struct{
     Entity positionAndDimensions;
-    char text[10];
+    char text[11];
+    unsigned int numberCharacters;
 } intro_button;
 intro_button intro_buttons[4];
 
@@ -29,6 +32,27 @@ GLuint intro_loadTexture(const char* file){
 }
 GLuint idBackgroungTexture;
 
+void intro_writeWordInCharArray(char* array, unsigned int arraySize, char* word, unsigned int wordSize){
+    if(array != NULL && word != NULL){
+        if(arraySize != 0 && wordSize != 0){
+            if(arraySize >= wordSize){
+                for(int i = 0; i < wordSize; i++){
+                    *(array + i) = *(word + i);
+                }
+                return;
+            }else{
+                printf("\n\a\tError (intro_writeWordInCharArray): The word selected is too long!\n ");
+                return;
+            }
+        } else{
+            printf("\n\a\tError (intro_writeWordInCharArray): the array's size or the word's size is 0.\n ");
+            return;
+        }
+    }else{
+        printf("\n\a\tError (intro_writeWordInCharArray): null pointer!\n ");
+        return;
+    }
+}
 
 void intro_initialize(){
     glEnable(GL_BLEND );
@@ -37,12 +61,30 @@ void intro_initialize(){
     idBackgroungTexture = intro_loadTexture("../../assets/introBackground.png");
 
     for (int i = 0; i < 4; i++){
-        intro_buttons[i].positionAndDimensions.dimensions.x = 70;
-        intro_buttons[i].positionAndDimensions.dimensions.y = 1000;
+        intro_buttons[i].positionAndDimensions.dimensions.x = 70; //height
+        intro_buttons[i].positionAndDimensions.dimensions.y = 1000; // width
+        // set the bottom-left vertice of the rectangle/button
         intro_buttons[i].positionAndDimensions.position.x = -500;
         intro_buttons[i].positionAndDimensions.position.y = 280 - (i*70);
     }
 
+    int wordSizeArray[4] = {4, 7, 11, 7}; //{"PLAY", "CONTROL", "HIGH SCORES", "CREDITS"}
+    for(int i = 0; i < 0; i++){
+        intro_buttons[i].numberCharacters = wordSizeArray[i];
+        char* array = &intro_buttons[i].text;
+
+        if(i == 0)
+            intro_writeWordInCharArray(array, 11, "PLAY", wordSizeArray[i]);
+        if(i == 1)
+            intro_writeWordInCharArray(array, 11, "CONTROL", wordSizeArray[i]);
+        if(i == 2)
+            intro_writeWordInCharArray(array, 11, "HIGH SCORES", wordSizeArray[i]);
+        if(i == 3)
+            intro_writeWordInCharArray(array, 11, "CREDITS", wordSizeArray[i]);    
+    }
+    free(wordSizeArray);
+
+    
     intro_selectedButton = play;
     intro_currentState = main;
 
@@ -80,10 +122,15 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
         glVertex3f(- 0 ,  20,  -10);
     GLEnd();
 
-    //escrever "TP1 - GALAXIAN"
+    //escrever tíulo
+    //freetype.org ?
+    //char title[14] = "TP1 - Galaxian";
+    
+    /*desenhar e colorir botões
+    glBegin(GL_POLYGON);
 
-    //desenhar botões e aplicar transparência
-    //colorir botão selecionado
+
+    glEnd();*/
     glutSwapBuffers();
 }
 
