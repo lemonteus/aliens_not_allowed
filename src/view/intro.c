@@ -7,7 +7,7 @@
 #include <SOIL/SOIL.h>
 #include <GL/glew.h>
 
-#include "../lib/basicStructures.h";
+#include "../lib/basicStructures.h"
 
 enum intro_selectedButton {play = 1, control = 2, highScores = 3, credits = 4};
 enum intro_selectedButton intro_selectedButton = play;
