@@ -11,3 +11,4 @@ unsigned short vlCount;
 
 GLint getViewList(int position);
 void newViewListID (char* filename);
+GLuint loadTexture(const char* file);
