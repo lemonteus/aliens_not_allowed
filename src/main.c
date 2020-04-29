@@ -105,7 +105,7 @@ void drawScene(){
 void keyDown (unsigned char key, int x, int y){
     switch (main_screenDef){
     case intro:
-        //intro_pressedKey(key, x, y);
+        //intro_keyDown(key, x, y);
         break;
     case game:
         game_keyDown(key, x, y, &player);

@@ -8,28 +8,19 @@
 #include <GL/glew.h>
 
 #include "../lib/basicStructures.h"
+#include "texture.h"
+
+#include "intro.h"
 
 enum intro_selectedButton {play = 1, control = 2, highScores = 3, credits = 4};
-enum intro_selectedButton intro_selectedButton = play;
-
 enum intro_state {main = 1, control = 2, highScores = 3, credits = 4};
+
+enum intro_selectedButton intro_selectedButton = play;
 enum intro_state intro_currentState = main;
 
 bool intro_reset = true;
 
-typedef struct{
-    Entity positionAndDimensions;
-    char text[11];
-    unsigned int numberCharacters;
-} intro_button;
-intro_button intro_buttons[4];
-
-GLuint intro_loadTexture(const char* file){
-    GLuint idTexture = SOIL_load_OGL_texture(file, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-    if(idTexture == 0)
-        printf("\t\aError while loading texture: %s", SOIL_last_result());
-    return idTexture;
-}
+Button intro_buttons[4];
 GLuint idBackgroungTexture;
 
 void intro_writeWordInCharArray(char* array, unsigned int arraySize, char* word, unsigned int wordSize){
@@ -58,8 +49,10 @@ void intro_initialize(){
     glEnable(GL_BLEND );
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    idBackgroungTexture = intro_loadTexture("../../assets/introBackground.png");
+    //set the intro's background source
+    idBackgroungTexture = loadTexture("../../assets/introBackground.png");
 
+    //initialize intro's buttons
     for (int i = 0; i < 4; i++){
         intro_buttons[i].positionAndDimensions.dimensions.x = 70; //height
         intro_buttons[i].positionAndDimensions.dimensions.y = 1000; // width
@@ -68,19 +61,20 @@ void intro_initialize(){
         intro_buttons[i].positionAndDimensions.position.y = 280 - (i*70);
     }
 
+    //assign text to each button
     int wordSizeArray[4] = {4, 7, 11, 7}; //{"PLAY", "CONTROL", "HIGH SCORES", "CREDITS"}
-    for(int i = 0; i < 0; i++){
+    for(int i = 0; i < 4; i++){
         intro_buttons[i].numberCharacters = wordSizeArray[i];
         char* array = &intro_buttons[i].text;
 
         if(i == 0)
-            intro_writeWordInCharArray(array, 11, "PLAY", wordSizeArray[i]);
+            intro_writeWordInCharArray(array, buttonTextMaxSize, "PLAY", wordSizeArray[i]);
         if(i == 1)
-            intro_writeWordInCharArray(array, 11, "CONTROL", wordSizeArray[i]);
+            intro_writeWordInCharArray(array, buttonTextMaxSize, "CONTROL", wordSizeArray[i]);
         if(i == 2)
-            intro_writeWordInCharArray(array, 11, "HIGH SCORES", wordSizeArray[i]);
+            intro_writeWordInCharArray(array, buttonTextMaxSize, "HIGH SCORES", wordSizeArray[i]);
         if(i == 3)
-            intro_writeWordInCharArray(array, 11, "CREDITS", wordSizeArray[i]);    
+            intro_writeWordInCharArray(array, buttonTextMaxSize, "CREDITS", wordSizeArray[i]);    
     }
     free(wordSizeArray);
 
@@ -97,7 +91,7 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
     }
     glEnable(GL_TEXTURE_2D);
 
-    //background image
+    //set the intro's background
     glBindTexture(GL_TEXTURE_2D, idBackgroungTexture);
     glBegin(GL_POLYGON);
         glTexCoord2f(0, 0);
