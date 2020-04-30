@@ -1,4 +1,4 @@
-// montar o ifndef
+//Compilation code: gcc intro.c -o intro.o -c -lGL -lSOIL
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,18 +12,18 @@
 
 #include "intro.h"
 
-enum intro_selectedButton {play = 1, control = 2, highScores = 3, credits = 4};
-enum intro_state {main = 1, control = 2, highScores = 3, credits = 4};
+enum intro_selectedButton {playButton = 1, controlButton, highScoresButton, creditsButton};
+enum intro_state {stateMain = 1, stateControl, stateHighScores, stateCredits};
 
-enum intro_selectedButton intro_selectedButton = play;
-enum intro_state intro_currentState = main;
+enum intro_selectedButton intro_selectedButton = playButton;
+enum intro_state intro_currentState = stateMain;
 
 bool intro_reset = true;
 
 Button intro_buttons[4];
 GLuint idBackgroungTexture;
 
-void intro_writeWordInCharArray(char* array, unsigned int arraySize, char* word, unsigned int wordSize){
+void intro_writeWordInCharArray(char *array, unsigned int arraySize, char* word, unsigned int wordSize){
     if(array != NULL && word != NULL){
         if(arraySize != 0 && wordSize != 0){
             if(arraySize >= wordSize){
@@ -65,7 +65,8 @@ void intro_initialize(){
     int wordSizeArray[4] = {4, 7, 11, 7}; //{"PLAY", "CONTROL", "HIGH SCORES", "CREDITS"}
     for(int i = 0; i < 4; i++){
         intro_buttons[i].numberCharacters = wordSizeArray[i];
-        char* array = &intro_buttons[i].text;
+
+        char* array = &(intro_buttons[i].text[0]);
 
         if(i == 0)
             intro_writeWordInCharArray(array, buttonTextMaxSize, "PLAY", wordSizeArray[i]);
@@ -76,11 +77,9 @@ void intro_initialize(){
         if(i == 3)
             intro_writeWordInCharArray(array, buttonTextMaxSize, "CREDITS", wordSizeArray[i]);    
     }
-    free(wordSizeArray);
 
-    
-    intro_selectedButton = play;
-    intro_currentState = main;
+    intro_selectedButton = playButton;
+    intro_currentState = stateMain;
 
     intro_reset = false;
 }
@@ -120,13 +119,17 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
     //freetype.org ?
     //char title[14] = "TP1 - Galaxian";
     
-    /*desenhar e colorir botões
+    //desenhar e colorir botões
     glBegin(GL_POLYGON);
 
 
-    glEnd();*/
+    glEnd();
     glutSwapBuffers();
 }
 
 //se a pagina for alterada: intro_reset = true;
 
+//void intro_keyboardDownFunc(int key, int x, int y);
+//void intro_keyboardUpFunc(int key, int x, int y);
+//void intro_specialKeyDownFunc(int key, int x, int y);
+//void intro_specialKeyUpFunc(int key, int x, int y);

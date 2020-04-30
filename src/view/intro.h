@@ -1,4 +1,5 @@
-// montar o ifndef
+#ifndef _INTRO_H_
+#define _INTRO_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,32 +9,14 @@
 #include <GL/glew.h>
 
 #include "../lib/basicStructures.h"
+#include "texture.h"
 
-enum intro_selectedButton {play = 1, control = 2, highScores = 3, credits = 4};
-enum intro_selectedButton intro_selectedButton = play;
-
-enum intro_state {main = 1, control = 2, highScores = 3, credits = 4};
-enum intro_state intro_currentState = main;
-
-bool intro_reset = true;
-
-Button intro_buttons[4];
-
-GLuint intro_loadTexture(const char* file);
-GLuint idBackgroungTexture;
-
-void intro_writeWordInCharArray(char* array, unsigned int arraySize, char* word, unsigned int wordSize);
-
+void intro_writeWordInCharArray(char *array, unsigned int arraySize, char* word, unsigned int wordSize);
 void intro_initialize();
-
 void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame);
+//void intro_keyboardDownFunc(int key, int x, int y);
+//void intro_keyboardUpFunc(int key, int x, int y);
+//void intro_specialKeyDownFunc(int key, int x, int y);
+//void intro_specialKeyUpFunc(int key, int x, int y);
 
-//void intro_keyDown(unsigned char key, int x, int y);
-
-//void intro_specialKeyDown(unsigned char key, int x, int y);
-
-
-
-
-
-//se a pagina for alterada: intro_reset = true;
+#endif // _INTRO_H_
