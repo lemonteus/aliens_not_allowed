@@ -78,20 +78,7 @@ void drawScene(){
         //intro_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
         break;
     case game:
-        //game_drawScene(&main_screenDef, &main_startNewGame);
-
-        //player
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, viewList[0]);
-
-        glBegin(GL_POLYGON);
-            glTexCoord2f(0, 1); glVertex3f(-(getPlayerDimensionX()) + getPlayerPositionX(&player), (getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
-            glTexCoord2f(1, 1); glVertex3f( getPlayerDimensionX() + getPlayerPositionX(&player), (getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
-            glTexCoord2f(1, 0); glVertex3f( getPlayerDimensionX() + getPlayerPositionX(&player),  (-getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
-            glTexCoord2f(0, 0); glVertex3f(-(getPlayerDimensionX()) + getPlayerPositionX(&player),  (-getPlayerDimensionY() - PLAYER_INITIAL_Y_POS),  0);
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
-        glutSwapBuffers();
+        game_drawScene(&main_screenDef, &main_startNewGame, &player);
         break;
     case afterGame:
         //afterGame_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window

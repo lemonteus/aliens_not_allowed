@@ -6,16 +6,22 @@
 struct{
     unsigned int healthPoints;
     unsigned int attackPoints;
-    Sprite sprite;
+    Entity entity;
     bool isMoving;
     int speed;
+    int textureID;
 } typedef Player;
 
-int getPlayerDimensionX ();
-int getPlayerDimensionY ();
+int getPlayerDimensionX();
+int getPlayerDimensionY();
 
 int getPlayerPositionX();
 int getPlayerPositionY();
+
+int getPlayerInitialXPos();
+int getPlayerInitialYPos();
+
+int getPlayerSpeed();
 
 void player_modifyPositionX(Player *player, int amount);
 void player_modifyPositionY(Player *player, int amount);

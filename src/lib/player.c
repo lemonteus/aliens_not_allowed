@@ -3,37 +3,54 @@
 
 #include "player.h"
 
+#define PLAYER_INITIAL_Y_POS 0
+#define PLAYER_INITIAL_X_POS 0
 #define PLAYER_SPEED 10
 
 int getPlayerPositionX(Player *player)
 {
-    return player->sprite.position.x;
+    return player->entity.position.x;
 }
 
 int getPlayerPositionY(Player *player)
 {
-    return player->sprite.position.y;
+    return player->entity.position.y;
+}
+
+int getPlayerInitialXPos()
+{
+    return PLAYER_INITIAL_X_POS;
+}
+
+int getPlayerInitialYPos()
+{
+    return PLAYER_INITIAL_Y_POS;
+}
+
+int getPlayerSpeed()
+{
+    return PLAYER_SPEED;
 }
 
 void player_modifyPositionX(Player *player, int amount)
 {
-    player->sprite.position.x += amount;
+    player->entity.position.x += amount;
 }
 
 void player_modifyPositionY(Player *player, int amount)
 {
-    player->sprite.position.y += amount;
+    player->entity.position.y += amount;
 }
 
 void player_initialize(Player *player, int positionX, int positionY, int viewListNumber)
 {
-    player->sprite.position.x = positionX;
-    player->sprite.position.y = positionY;
+    player->entity.position.x = positionX;
+    player->entity.position.y = positionY;
 
     player->isMoving = false;
     player->speed = PLAYER_SPEED;
 
-    player->sprite.texture = viewListNumber;
+    player->textureID = viewListNumber;
 
 }
 
