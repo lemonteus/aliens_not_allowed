@@ -15,6 +15,9 @@
 //Handling textures
 #include "./view/texture.h"
 
+//Handling keyboard events
+#include "./lib/keyboard.h"
+
 
 #define min(x,y) ((x) < (y) ? (x) : (y))
 #define PLAYER_INITIAL_Y_POS 350
@@ -90,6 +93,9 @@ void drawScene(){
 }
 
 void keyDown (unsigned char key, int x, int y){
+
+    keyState[key] = true;
+
     switch (main_screenDef){
     case intro:
         //intro_keyDown(key, x, y);
@@ -107,6 +113,9 @@ void keyDown (unsigned char key, int x, int y){
 }
 
 void keyUp (unsigned char key, int x, int y){
+
+    keyState[key] = false;
+
     switch(main_screenDef)
     {
         case game:
