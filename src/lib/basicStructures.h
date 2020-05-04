@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _BASICSTRUCTURES_H_
+#define _BASICSTRUCTURES_H_
 
 #define buttonTextMaxSize 50
 
@@ -26,3 +27,5 @@ typedef struct{
     char text[buttonTextMaxSize];
     unsigned int numberCharacters;
 } Button;
+
+#endif // _BASICSTRUCTURES_H_
