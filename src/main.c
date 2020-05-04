@@ -22,6 +22,9 @@
 #define min(x,y) ((x) < (y) ? (x) : (y))
 #define PLAYER_INITIAL_Y_POS 350
 
+#define SCREEN_WIDTH 600
+#define SCREEN_HEIGHT 600
+
 Player player;
 
 enum basicStructures_screen main_screenDef = intro;
@@ -31,11 +34,15 @@ void initialize(){
     
     glClearColor(1.0, 1.0, 1.0, 0.0);
     
-    //enabling support for texture transparency
-    glEnable(GL_BLEND );
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND ); //enabling support for texture transparency
+    glEnable(GL_DEPTH_TEST); // enabling depth buffer and z coordinate
+    glEnable(GL_TEXTURE_2D); //enabling texture support
 
-    //newViewList("insert_player_texture_path_here.png");
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    
+    //avoid ragged transitions by disabling linear texel filtering for mignification and using nearest instead                                                 
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getViewList(0));
 
     main_screenDef = intro;
@@ -71,8 +78,7 @@ void reshape(int width, int height){
 }
 
 void drawScene(){
-    glClearColor(0, 0, 0, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
     
     // &main_screenDef as parameter to enable switch between scenes
     // &main_startNewGame as parameter to choose between create and continue games
@@ -161,8 +167,8 @@ int main(int argc, char **argv){
     glutInitContextVersion(1, 1); 
     glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
-    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA );
-    glutInitWindowSize( 400, 400 );
+    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowSize( SCREEN_WIDTH, SCREEN_HEIGHT );
     glutInitWindowPosition( 50, 50 );
 
     glutCreateWindow( "TP1: Galaxian Pedro Vaz e Mateus Lemos" );
