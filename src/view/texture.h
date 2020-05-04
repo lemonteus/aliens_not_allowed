@@ -1,3 +1,6 @@
+#ifndef _TEXTURE_H_
+#define _TEXTURE_H_
+
 #include <stdio.h>
 
 #include <GL/glew.h>
@@ -12,3 +15,5 @@ unsigned short vlCount;
 GLint getViewList(int position);
 void newViewListID (char* filename);
 GLuint loadTexture(const char* file);
+
+#endif // _TEXTURE_H_

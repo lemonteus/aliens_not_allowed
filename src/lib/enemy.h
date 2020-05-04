@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _ENEMY_H_
+#define _ENEMY_H_
+
 #include "basicStructures.h"
 
 struct{
@@ -6,3 +8,5 @@ struct{
     unsigned int attackPoints;
     Vector2D position;
 } typedef Enemy;
+
+#endif //_ENEMY_H_

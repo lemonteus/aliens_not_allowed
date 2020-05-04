@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _PLAYER_H_
+#define _PLAYER _H_
+
 #include <stdbool.h>
 
 #include "basicStructures.h"
@@ -27,3 +29,5 @@ void player_moveRight(Player* player);
 void player_stopMoving(Player* player);
 
 void player_modifyHP( int points, Player *player);
+
+#endif //_PLAYER_H_

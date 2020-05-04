@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _GAME_H_
+#define _GAME_H_
+
 #include "../lib/player.h"
 #include "../lib/basicStructures.h"
 
@@ -11,3 +13,5 @@ void game_keyDown(unsigned char key, int x, int y, Player *player);
 void game_keyUp(unsigned char key, int x, int y, Player *player);
 void game_specialKeyDown(int key, int x, int y, Player *player);
 void game_specialKeyUp(int key, int x, int y, Player *player);
+
+#endif // _GAME_H_
