@@ -27,19 +27,15 @@ bool projectileHitTargetRectangle(Vector2D projectilePosition, Vector2D targetBo
 
 void game_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame, Player *player)
 {
+    
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glCallList(getViewList(0)); //white background
+
     //player
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, viewList[0]);
+    glCallList(getViewList(1));  //player spaceship
 
-    glBegin(GL_POLYGON);
-        glTexCoord2f(0, 1); glVertex3f(-(getPlayerDimensionX()) + getPlayerPositionX(&player), (getPlayerDimensionY() - getPlayerInitialYPos()),  0);
-        glTexCoord2f(1, 1); glVertex3f( getPlayerDimensionX() + getPlayerPositionX(&player), (getPlayerDimensionY() - getPlayerInitialYPos()),  0);
-        glTexCoord2f(1, 0); glVertex3f( getPlayerDimensionX() + getPlayerPositionX(&player),  (-getPlayerDimensionY() - getPlayerInitialYPos()),  0);
-        glTexCoord2f(0, 0); glVertex3f(-(getPlayerDimensionX()) + getPlayerPositionX(&player),  (-getPlayerDimensionY() - getPlayerInitialYPos()),  0);
-    glEnd();
     glDisable(GL_TEXTURE_2D);
-
-    glutSwapBuffers();
 }
 
 void game_keyDown(unsigned char key, int x, int y, Player* player)
@@ -48,7 +44,6 @@ void game_keyDown(unsigned char key, int x, int y, Player* player)
     {
         case 'A':
         case 'a':
-            while(keyState['A'] || keyState['a'])
             player_moveLeft(player);
             break;
 
@@ -68,7 +63,7 @@ void game_keyUp(unsigned char key, int x, int y, Player* player)
         case 'a':
         case 'D':
         case 'd':
-            player_stopMoving(&player);
+            player_stopMoving(player);
             break;
     }
 }
@@ -94,7 +89,7 @@ void game_specialKeyUp(int key, int x, int y, Player* player)
     {
         case 102: //right
         case 100: //left
-            player_stopMoving(&player);
+            player_stopMoving(player);
             break;
     }
 }

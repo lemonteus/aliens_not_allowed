@@ -18,7 +18,6 @@
 //Handling keyboard events
 #include "./lib/keyboard.h"
 
-
 #define min(x,y) ((x) < (y) ? (x) : (y))
 #define PLAYER_INITIAL_Y_POS 350
 
@@ -32,7 +31,7 @@ bool main_startNewGame = true;
 
 void initialize(){
     
-    glClearColor(1.0, 1.0, 1.0, 0.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     
     glEnable(GL_BLEND ); //enabling support for texture transparency
     glEnable(GL_DEPTH_TEST); // enabling depth buffer and z coordinate
@@ -43,7 +42,20 @@ void initialize(){
     //avoid ragged transitions by disabling linear texel filtering for mignification and using nearest instead                                                 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-    player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getViewList(0));
+    //newTextureID([TEXTURE PATH]) // TEXTURE ID GOES UP BY ONE EVERYTIME newTextureID IS CALLED
+
+    newTextureID("../assets/player_spaceship.png"); //0
+    newTextureID("../assets/purple_enemy.png"); //1
+    newTextureID("../assets/intro_bg.png"); //2
+    newTextureID("../assets/intro_mg1.png"); //3
+    newTextureID("../assets/intro_mg2.png"); //4
+    newTextureID("../assets/starry_sky.png"); //5
+
+    generateViewList(2000, 2000, 0, 1, rgb_white); //white background
+    mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, 5); //player spritesheet
+    mapSpriteSheet(getTextureID(1), 1600, 1600, 3200, 1600, 10, 5); //enemy spritesheet
+
+    player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(1));
 
     main_screenDef = intro;
 
@@ -52,7 +64,7 @@ void initialize(){
 
 void reshape(int width, int height){
 
-    // Set the game-square size as the bigger dimension (hight or width)
+    // Set the game-square size as the bigger dimension (height or width)
     int squareSize = min(width, height);
 
     /*
@@ -84,7 +96,7 @@ void drawScene(){
     // &main_startNewGame as parameter to choose between create and continue games
     switch (main_screenDef){ 
     case intro:
-        //intro_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
+        intro_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
         break;
     case game:
         game_drawScene(&main_screenDef, &main_startNewGame, &player);
@@ -95,7 +107,14 @@ void drawScene(){
     default:
         break;
     }
-    
+
+    glutSwapBuffers();
+}
+
+void update()
+{
+    glutPostRedisplay();
+
 }
 
 void keyDown (unsigned char key, int x, int y){
@@ -182,8 +201,8 @@ int main(int argc, char **argv){
     glutKeyboardUpFunc(keyUp);
     glutSpecialFunc(specialKeyDown);
     glutSpecialUpFunc(specialKeyUp);
-
     glutMouseFunc(mouseGestures);
+    glutIdleFunc(update);
 
     initialize();
 
