@@ -5,6 +5,10 @@
 
 #define PLAYER_INITIAL_Y_POS 0
 #define PLAYER_INITIAL_X_POS 0
+
+#define PLAYER_DIMENSION_X 50
+#define PLAYER_DIMENSION_Y 50
+
 #define PLAYER_SPEED 10
 
 int getPlayerPositionX(Player *player)
@@ -15,6 +19,16 @@ int getPlayerPositionX(Player *player)
 int getPlayerPositionY(Player *player)
 {
     return player->entity.position.y;
+}
+
+int getPlayerDimensionX(Player *player)
+{
+    return PLAYER_DIMENSION_X;
+}
+
+int getPlayerDimensionY(Player *player)
+{
+    return PLAYER_DIMENSION_Y;
 }
 
 int getPlayerInitialXPos()
@@ -42,7 +56,7 @@ void player_modifyPositionY(Player *player, int amount)
     player->entity.position.y += amount;
 }
 
-void player_initialize(Player *player, int positionX, int positionY, int viewListNumber)
+void player_initialize(Player *player, int positionX, int positionY, unsigned int id)
 {
     player->entity.position.x = positionX;
     player->entity.position.y = positionY;
@@ -50,7 +64,7 @@ void player_initialize(Player *player, int positionX, int positionY, int viewLis
     player->isMoving = false;
     player->speed = PLAYER_SPEED;
 
-    player->textureID = viewListNumber;
+    player->textureID = id;
 
 }
 

@@ -11,7 +11,7 @@ struct{
     Entity entity;
     bool isMoving;
     int speed;
-    int textureID;
+    unsigned int textureID;
 } typedef Player;
 
 int getPlayerDimensionX();
@@ -28,7 +28,7 @@ int getPlayerSpeed();
 void player_modifyPositionX(Player *player, int amount);
 void player_modifyPositionY(Player *player, int amount);
 
-void player_initialize(Player *player, int positionX, int positionY, int viewListNumber);
+void player_initialize(Player *player, int positionX, int positionY, unsigned int id);
 
 void player_moveLeft(Player* player);
 void player_moveRight(Player* player);

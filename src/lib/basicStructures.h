@@ -23,7 +23,7 @@ typedef struct{
 
 typedef struct{
     Entity positionAndDimensions;
-    GLuint textureID;
+    unsigned int textureID;
     char text[buttonTextMaxSize];
     unsigned int numberCharacters;
 } Button;
