@@ -49,9 +49,6 @@ void intro_initialize(){
     glEnable(GL_BLEND );
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //set the intro's background source
-    idBackgroungTexture = loadTexture("../../assets/introBackground.png");
-
     //initialize intro's buttons
     for (int i = 0; i < 4; i++){
         intro_buttons[i].positionAndDimensions.dimensions.x = 70; //height
@@ -91,19 +88,19 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
     glEnable(GL_TEXTURE_2D);
 
     //set the intro's background
-    glBindTexture(GL_TEXTURE_2D, idBackgroungTexture);
+    glBindTexture(GL_TEXTURE_2D, getTextureID(2));
     glBegin(GL_POLYGON);
         glTexCoord2f(0, 0);
-        glVertex3f(-500, -500,  -10);
+        glVertex3f(-500, -500,  0);
 
         glTexCoord2f(1, 0);
-        glVertex3f( 500, -500,  -10);
+        glVertex3f( 500, -500,  0);
 
         glTexCoord2f(1, 1);
-        glVertex3f( 500,  500,  -10);
+        glVertex3f( 500,  500,  0);
 
         glTexCoord2f(0, 1);
-        glVertex3f(-500,  500,  -10);
+        glVertex3f(-500,  500,  0);
     glEnd();
     glDisable(GL_TEXTURE_2D);
 
@@ -113,7 +110,7 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
         glVertex3f(-400, 350,  -10);
         glVertex3f( 400, 350,  -10);
         glVertex3f(- 0 ,  20,  -10);
-    GLEnd();
+    glEnd();
 
     //escrever tíulo
     //freetype.org ?
@@ -124,7 +121,6 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
 
 
     glEnd();
-    glutSwapBuffers();
 }
 
 //se a pagina for alterada: intro_reset = true;
