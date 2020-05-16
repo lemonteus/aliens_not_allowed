@@ -11,6 +11,7 @@
 
 GLuint textureIDs[MAX_TEXTURES];
 GLuint viewLists[MAX_VIEWLISTS];
+
 unsigned short vlCount = 0; //keeping track of the amount of view lists being stored
 unsigned short texCount = 0; 
 

@@ -10,10 +10,10 @@
 #define MAX_TEXTURES 100
 #define MAX_VIEWLISTS 1000
 
-GLint textureIDs[MAX_TEXTURES];
-GLint viewLists[MAX_VIEWLISTS];
+GLuint textureIDs[MAX_TEXTURES];
+GLuint viewLists[MAX_VIEWLISTS];
 
-unsigned short vlCount;
+unsigned short vlCount; //keeping track of the amount of view lists being stored
 unsigned short texCount;
 
 static const float defaultVertices[4][2] = {{0.0, 0.0}, {1.0, 0.0}, {1.0, 1.0}, {0.0, 1.0}};
