@@ -81,36 +81,22 @@ void intro_initialize(){
     intro_reset = false;
 }
 
-void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame){
+void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
+{
     if(intro_reset){
         intro_initialize();
     }
-    glEnable(GL_TEXTURE_2D);
 
-    //set the intro's background
-    glBindTexture(GL_TEXTURE_2D, getTextureID(2));
-    glBegin(GL_POLYGON);
-        glTexCoord2f(0, 0);
-        glVertex3f(-500, -500,  0);
-
-        glTexCoord2f(1, 0);
-        glVertex3f( 500, -500,  0);
-
-        glTexCoord2f(1, 1);
-        glVertex3f( 500,  500,  0);
-
-        glTexCoord2f(0, 1);
-        glVertex3f(-500,  500,  0);
-    glEnd();
-    glDisable(GL_TEXTURE_2D);
+   glCallList(getViewList(7));
 
     //logo's triangle
-    glColor3f(0, 0, 0);
+    /*glColor3f(0, 0, 0);
     glBegin(GL_POLYGON);
         glVertex3f(-400, 350,  -10);
         glVertex3f( 400, 350,  -10);
         glVertex3f(- 0 ,  20,  -10);
     glEnd();
+    */
 
     //escrever tíulo
     //freetype.org ?

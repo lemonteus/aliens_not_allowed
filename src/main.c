@@ -54,6 +54,7 @@ void initialize(){
     generateViewList(2000, 2000, 0, 1, rgb_white); //white background
     mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, 5); //player spritesheet
     mapSpriteSheet(getTextureID(1), 1600, 1600, 3200, 1600, 10, 5); //enemy spritesheet
+    generateTextureViewList(getTextureID(2), 1000, 1000, 0, 1, defaultVertices); //intro bg
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(1));
 
