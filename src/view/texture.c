@@ -43,11 +43,10 @@ void generateViewList( int width, int height, int z, int ratio, const float rgb[
     glNewList(viewLists[vlCount], GL_COMPILE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
-            
             glVertex3f(-width/(2 * ratio), -height/(2 * ratio), z);
-            glVertex3f(width/(2 * ratio), -height/(2 * ratio),  z);
-            glVertex3f(width/(2 * ratio), height/(2 * ratio),  z);
             glVertex3f(-width/(2 * ratio), height/(2 * ratio),  z);
+            glVertex3f(width/(2 * ratio), height/(2 * ratio),  z);
+            glVertex3f(width/(2 * ratio), -height/(2 * ratio),  z);
         glEnd();
      glEndList();
 
@@ -59,14 +58,14 @@ void generateTextureViewList(GLuint id, int width, int height, int z, int ratio,
 {
     viewLists[vlCount] = glGenLists(1);
     glNewList(viewLists[vlCount], GL_COMPILE);
-        glBindTexture(GL_TEXTURE_2D, id);
-        glBegin(GL_POLYGON);
-            glTexCoord2fv(vertices[0]); glVertex3f(-width/(2 * ratio), -height/(2 * ratio), z);
-            glTexCoord2fv(vertices[1]); glVertex3f(width/(2 * ratio), -height/(2 * ratio),  z);
-            glTexCoord2fv(vertices[2]); glVertex3f(width/(2 * ratio), height/(2 * ratio),  z);
-            glTexCoord2fv(vertices[3]); glVertex3f(-width/(2 * ratio), height/(2 * ratio),  z);
-        glEnd();
-     glEndList();
+    glBindTexture(GL_TEXTURE_2D, id);
+    glBegin(GL_POLYGON);
+        glTexCoord2fv(vertices[0]); glVertex3f(-width/(2 * ratio), -height/(2 * ratio), z);
+        glTexCoord2fv(vertices[1]); glVertex3f(-width/(2 * ratio), height/(2 * ratio),  z);
+        glTexCoord2fv(vertices[2]); glVertex3f(width/(2 * ratio), height/(2 * ratio),  z);
+        glTexCoord2fv(vertices[3]); glVertex3f(width/(2 * ratio), -height/(2 * ratio),  z);
+    glEnd();
+    glEndList();
 
     vlCount = vlCount + 1;
 
@@ -114,9 +113,9 @@ void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth
         
         const float vertices[4][2] = {
             {tx, ty},
-            {tx + tw, ty},
+            {tx, ty+th},
             {tx + tw, ty + th},
-            {tx, ty + th}
+            {tx+tw, ty}
         };
 
         generateTextureViewList(id, spriteWidth, spriteHeight, z, ratio, vertices);
