@@ -140,6 +140,30 @@ void reshape(int width, int height){
     glLoadIdentity();
 }
 
+void drawText(const char *text, int lenght, int x, int y, int z){
+    double matrix[16];
+
+    glMatrixMode(GL_PROJECTION);
+    glGetDoublev(GL_PROJECTION_MATRIX, matrix);
+    glLoadIdentity();
+
+    glOrtho(-500, 500, -500, 500, -10, 10);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glPushMatrix();
+    glLoadIdentity();
+
+    glRasterPos3i(x, y, z);
+    for(int i = 0; i < lenght; i++){
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, (int)text[i]);
+    }
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixd(matrix);
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void drawScene(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
     
@@ -162,14 +186,11 @@ void drawScene(){
     glutSwapBuffers();
 }
 
-void update()
-{
+void update(){
     glutPostRedisplay();
-
 }
 
 void keyDown (unsigned char key, int x, int y){
-
     keyState[key] = true;
 
     switch (main_screenDef){
@@ -189,27 +210,23 @@ void keyDown (unsigned char key, int x, int y){
 }
 
 void keyUp (unsigned char key, int x, int y){
-
     keyState[key] = false;
 
-    switch(main_screenDef)
-    {
+    switch(main_screenDef){
         case game:
             game_keyUp(key, x, y, &player);
     }
 }
 
 void specialKeyDown (int key, int x, int y){
-    switch(main_screenDef)
-    {
+    switch(main_screenDef){
         case game:
             game_specialKeyDown(key, x, y, &player);
     }
 }
 
 void specialKeyUp (int key, int x, int y){
-    switch(main_screenDef)
-    {
+    switch(main_screenDef){
         case game:
             game_specialKeyUp(key, x, y, &player);
     }
