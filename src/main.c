@@ -40,7 +40,9 @@ void initialize(){
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
     
     //avoid ragged transitions by disabling linear texel filtering for mignification and using nearest instead                                                 
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 
     //newTextureID([TEXTURE PATH]) // TEXTURE ID GOES UP BY ONE EVERYTIME newTextureID IS CALLED
 
@@ -54,7 +56,55 @@ void initialize(){
     generateViewList(2000, 2000, 0, 1, rgb_white); //white background
     mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, 5); //player spritesheet
     mapSpriteSheet(getTextureID(1), 1600, 1600, 3200, 1600, 10, 5); //enemy spritesheet
-    generateTextureViewList(getTextureID(2), 1000, 1000, 0, 1, defaultVertices); //intro bg
+    /*generateTextureViewList(getTextureID(2), 1000, 1000, 0, 1, defaultVertices); //intro background
+    generateTextureViewList(getTextureID(3), 1000, 1000, 4, 1, defaultVertices); //intro midground 1
+    generateTextureViewList(getTextureID(4), 1000, 1000, 5, 1, defaultVertices); //intro midground 2
+    generateTextureViewList(getTextureID(5), 5000, 1000, 3, 1, defaultVertices); //starry sky*/
+
+
+   int offset = 10;
+
+    viewLists[vlCount] = glGenLists(1);
+    glNewList(viewLists[vlCount], GL_COMPILE);
+     glBindTexture(GL_TEXTURE_2D, getTextureID(2));
+
+	glBegin(GL_POLYGON);
+		glTexCoord2f(0, 1); glVertex3f(-500, 500,  0);
+		glTexCoord2f(1, 1); glVertex3f( 500, 500,  0);
+		glTexCoord2f(1, 0); glVertex3f( 500, -500,  0);
+		glTexCoord2f(0, 0); glVertex3f( -500, -500,  0);
+	glEnd();
+		
+	glBindTexture(GL_TEXTURE_2D, getTextureID(5));
+
+	glBegin(GL_POLYGON);
+		glTexCoord2f(0, 1); glVertex3f( -500 - offset, 500,  3);
+		glTexCoord2f(1, 1); glVertex3f( 8000/2 - offset, 500,  3);
+		glTexCoord2f(1, 0); glVertex3f( 8000/2 - offset, -500,  3);
+		glTexCoord2f(0, 0); glVertex3f( -500 - offset, -500,  3);
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D, getTextureID(4));
+
+	glBegin(GL_POLYGON);
+		glTexCoord2f(0, 1); glVertex3f(-500, 500,  4);
+		glTexCoord2f(1, 1); glVertex3f( 500, 500,  4);
+		glTexCoord2f(1, 0); glVertex3f( 500, -500,  4);
+		glTexCoord2f(0, 0); glVertex3f( -500, -500,  4);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, getTextureID(3));
+
+	glBegin(GL_POLYGON);
+		glTexCoord2f(0, 1); glVertex3f(-500, 500,  5);
+		glTexCoord2f(1, 1); glVertex3f( 500, 500,  5);
+		glTexCoord2f(1, 0); glVertex3f( 500, -500,  5);
+		glTexCoord2f(0, 0); glVertex3f( -500, -500,  5);
+	glEnd();
+    glEndList();
+
+    vlCount = vlCount + 1;
+    
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(1));
 
