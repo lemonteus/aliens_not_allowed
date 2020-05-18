@@ -16,7 +16,7 @@ GLuint viewLists[MAX_VIEWLISTS];
 unsigned short vlCount; //keeping track of the amount of view lists being stored
 unsigned short texCount;
 
-static const float defaultVertices[4][2] = {{0.0, 0.0}, {1.0, 0.0}, {1.0, 1.0}, {0.0, 1.0}};
+static const float defaultVertices[4][2] = {{0.0, 0.0}, {0.0, 1.0}, {1.0, 1.0}, {1.0, 0.0}};
 static const float rgb_white[3] = {1.0, 1.0, 1.0};
 
 GLuint getTextureID(int position);

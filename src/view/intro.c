@@ -85,9 +85,17 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
 {
     if(intro_reset){
         intro_initialize();
-    }
+    }                            
 
-   glCallList(getViewList(7));
+    glEnable(GL_TEXTURE_2D);
+
+    glCallList(getViewList(7));
+    /*glCallList(getViewList(8));
+    glCallList(getViewList(9));
+    glCallList(getViewList(10));*/
+            
+    glFlush();
+    glDisable(GL_TEXTURE_2D);
 
     //logo's triangle
     /*glColor3f(0, 0, 0);
@@ -103,10 +111,10 @@ void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame)
     //char title[14] = "TP1 - Galaxian";
     
     //desenhar e colorir botões
-    glBegin(GL_POLYGON);
+    /*glBegin(GL_POLYGON);
 
 
-    glEnd();
+    glEnd();*/
 }
 
 //se a pagina for alterada: intro_reset = true;
