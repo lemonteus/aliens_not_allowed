@@ -14,6 +14,8 @@
 void intro_writeWordInCharArray(char *array, unsigned int arraySize, char* word, unsigned int wordSize);
 void intro_initialize();
 void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame);
+void intro_incrementOffset();
+void intro_updateStarrySky();
 //void intro_keyboardDownFunc(int key, int x, int y);
 //void intro_keyboardUpFunc(int key, int x, int y);
 //void intro_specialKeyDownFunc(int key, int x, int y);
