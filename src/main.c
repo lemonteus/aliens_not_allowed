@@ -66,8 +66,6 @@ void initialize(){
     main_startNewGame = false;
 }
 
-
-
 void reshape(int width, int height){
 
     // Set the game-square size as the bigger dimension (height or width)
@@ -93,30 +91,6 @@ void reshape(int width, int height){
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-}
-
-void drawText(const char *text, int lenght, int x, int y, int z){
-    double matrix[16];
-
-    glMatrixMode(GL_PROJECTION);
-    glGetDoublev(GL_PROJECTION_MATRIX, matrix);
-    glLoadIdentity();
-
-    glOrtho(-500, 500, -500, 500, -10, 10);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glPushMatrix();
-    glLoadIdentity();
-
-    glRasterPos3i(x, y, z);
-    for(int i = 0; i < lenght; i++){
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, (int)text[i]);
-    }
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(matrix);
-    glMatrixMode(GL_MODELVIEW);
 }
 
 void drawScene(){
@@ -203,8 +177,7 @@ void mouseGestures(int button, int state, int x, int y){
     }
 }
 
-void timerFunc(int value)
-{
+void timerFunc(int value){
 	intro_incrementOffset();
 
 	glutTimerFunc(100, timerFunc, 1); //call timerFunc recursively so it's forever looping
@@ -232,6 +205,7 @@ int main(int argc, char **argv){
     glutSpecialFunc(specialKeyDown);
     glutSpecialUpFunc(specialKeyUp);
     glutMouseFunc(mouseGestures);
+
     glutIdleFunc(update);
     glutTimerFunc(100, timerFunc, 1); //update every 0.1 second
 
