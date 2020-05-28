@@ -6,7 +6,7 @@ A game developed with [OpenGL](https://www.opengl.org/), [Freeglut](http://freeg
 
 ## Setting Up Environment (Ubuntu based) :
 To run and edit this project is necessary to install the following resources:
-- FreeGlut: `sudo apt-get install freeglut3-dev`
+- FreeGlut: `sudo apt install freeglut3-dev`
 - GCC: `sudo apt install gcc`
 - GLEW: `sudo apt install libglew-dev`
 - SOIL: `sudo apt install libsoil-dev`
