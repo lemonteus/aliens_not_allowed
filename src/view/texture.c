@@ -12,7 +12,7 @@
 GLuint textureIDs[MAX_TEXTURES];
 GLuint viewLists[MAX_VIEWLISTS];
 
-unsigned short vlCount = 0; //number of view lists being stored
+unsigned short vlCount = 0; // number of view lists being stored
 unsigned short texCount = 0; 
 
 GLuint getTextureID(int position){
@@ -88,7 +88,6 @@ void generateTextureViewList(GLuint id, int width, int height, int z, int ratio,
  */
 void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth, int sheetHeight, int ratio, int z){
     /* Variables meanings:
-     *
      *   id: texture's id to the sprite sheet to be mapped
      *   spriteWidth & spriteHeight: width & height for each sprite
      *   sheetWidth  & sheetHeight : width & height of the sprite sheet
@@ -112,7 +111,7 @@ void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth
     for(frameIndex; frameIndex <= totalSprites; frameIndex++){
         /* "tx" stands for "Texture X"
          *
-         * it gets the modulo of the sprite index by number per row to identify the row index,
+         * It gets the integer rest of the division between sprite index and number per row. It identifies the row index,
          * then divide it by numberPerRow to scale it according to the size of the spritesheet.
          * 
          * e.g.: index = 6 -> (6-1) % 4 = 1 (row index)/4 = 0.25 -> x coordinate of sprite with index 6 starts at 0.25.
@@ -123,8 +122,8 @@ void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth
         
         /* "ty" stands for "Texture Y"
          *
-         * it recieves the result of the division of the sprite intex by the amount of spriter per row
-         *   ( it's casted to int to pick up the while number and separete from decimals )
+         * It recieves the result of the division of the sprite intex by the amount of spriter per row
+         *   ( it's casted to int to pick up the whole number and separete from decimals )
          * then multiply it by texture height (th) in order to scale it
          * 
          * e.g.: index = 6 -> (6-1)/4 = 1 (row index)/4 = 0.25 -> x coordinate of sprite with index 6 starts at 0.25. 
