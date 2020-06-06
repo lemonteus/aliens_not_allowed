@@ -6,12 +6,19 @@ function deleteFilesFunc {
     rm -f $(pwd)/lib/fonts.o
     rm -f $(pwd)/view/intro.o
     rm -f $(pwd)/view/game.o
-    rm -f $(pwd)/tp1.out
 
     echo -e "Done."
 }
 
+clear
 echo -e "\nHello, $(whoami). The process of compilation has started!\n"
+
+echo -e "Compiling lib/fonts.c"
+gcc -c -o lib/fonts.o lib/fonts.c
+if [ $? -ne 0 ]; then
+    deleteFilesFunc
+    exit 1
+fi
 
 echo -e "Compiling lib/player.c"
 gcc -c -o lib/player.o -Wall lib/player.c
@@ -22,13 +29,6 @@ fi
 
 echo -e "Compiling view/texture.c"
 gcc -c -o view/texture.o view/texture.c
-if [ $? -ne 0 ]; then
-    deleteFilesFunc
-    exit 1
-fi
-
-echo -e "Compiling lib/fonts.c"
-gcc -c -o lib/fonts.o lib/fonts.c
 if [ $? -ne 0 ]; then
     deleteFilesFunc
     exit 1
@@ -55,9 +55,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo -e "\nCompiled finished!"
-echo -e "Initializing game..."
+echo -e "\nCompiled and finished!"
+deleteFilesFunc
+
+echo -e "\nInitializing game..."
 ./tp1.out
 
-deleteFilesFunc
 exit 0
