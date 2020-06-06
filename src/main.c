@@ -30,12 +30,11 @@ enum basicStructures_screen main_screenDef = intro;
 bool main_startNewGame = true;
 
 void initialize(){
-    
     glClearColor(0.0, 0.0, 0.0, 1.0);
     
-    glEnable(GL_BLEND ); //enabling support for texture transparency
-    glEnable(GL_DEPTH_TEST); // enabling depth buffer and z coordinate
-    glEnable(GL_TEXTURE_2D); //enabling texture support
+    glEnable(GL_BLEND ); // enable support for texture transparency
+    glEnable(GL_DEPTH_TEST); // enable depth buffer and z coordinate
+    glEnable(GL_TEXTURE_2D); //enable texture support
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
     
@@ -53,16 +52,17 @@ void initialize(){
     newTextureID("../assets/starry_sky.png"); //5
 
     generateViewList(2000, 2000, 0, 1, rgb_white); //white background
+
     mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, 5); //player spritesheet
     mapSpriteSheet(getTextureID(1), 1600, 1600, 3200, 1600, 10, 5); //enemy spritesheet
-    generateTextureViewList(getTextureID(2), 1000, 1000, 0, 1, defaultVertices); //intro background
-    generateTextureViewList(getTextureID(3), 1000, 1000, 4, 1, defaultVertices); //intro midground 1
-    generateTextureViewList(getTextureID(4), 1000, 1000, 5, 1, defaultVertices); //intro midground 2
+
+    generateTextureViewList(getTextureID(2), 1000, 1000, 0, 1, defaultVertices); // intro background
+    generateTextureViewList(getTextureID(3), 1000, 1000, 1, 1, defaultVertices); // intro midground 1
+    generateTextureViewList(getTextureID(4), 1000, 1000, 2, 1, defaultVertices); // intro midground 2
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(0));
 
     main_screenDef = intro;
-
     main_startNewGame = false;
 }
 
@@ -72,15 +72,15 @@ void reshape(int width, int height){
     int squareSize = min(width, height);
 
     /*
-    The first two values are the coordenates of the bottom-left pixel inside the window.
-    This formula sets, proportionally, the game-area to the window centre position
-
-    Ex.: Window 800:400
-            Biggest possible square: 400:400
-                x = (800-400/2) = 200
-
-    The last two values are the size of screen to be drawn. It needs to be the biggest square possible
-    */
+     * The first two values are the coordenates of the bottom-left pixel inside the window.
+     * This formula sets, proportionally, the game-area to the window centre position
+     * 
+     *  e.g.: Window 800:400
+     *       Biggest possible square: 400:400
+     *          x = (800-400/2) = 200
+     * 
+     * The last two values are the size of screen to be drawn. It needs to be the biggest square possible
+     */
     glViewport((width-squareSize)/2, (height-squareSize)/2, squareSize, squareSize);
 
     glMatrixMode(GL_PROJECTION);
@@ -193,7 +193,7 @@ int main(int argc, char **argv){
     glutInitWindowSize( SCREEN_WIDTH, SCREEN_HEIGHT );
     glutInitWindowPosition( 50, 50 );
 
-    glutCreateWindow( "TP1: Galaxian Pedro Vaz e Mateus Lemos" );
+    glutCreateWindow( "TP1 - Galaxian: Pedro Vaz e Mateus Lemos" );
 
     glutDisplayFunc(drawScene);
     glutReshapeFunc(reshape);

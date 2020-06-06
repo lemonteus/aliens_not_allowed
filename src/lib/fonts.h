@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
-void drawText(void * font , char *text, float x, float y, float z);
-void drawTextCentralized(void * font, char *text, float x, float y, float z);
+void drawText_GLUT(void * font , char *text, float x, float y, float z);
+void drawTextCentralized_GLUT(void * font, char *text, float x, float y, float z);
 
 #endif //_FONTS_C_
