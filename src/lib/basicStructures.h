@@ -22,10 +22,10 @@ typedef struct{
 } Entity;
 
 typedef struct{
-    Entity positionAndDimensions;
-    unsigned int textureID;
     char text[buttonTextMaxSize];
     unsigned int numberCharacters;
+    Entity positionAndDimensions; // top-left vertex position
+    unsigned int textureID;
 } Button;
 
-#endif // _BASICSTRUCTURES_H_
+#endif //_BASICSTRUCTURES_H_

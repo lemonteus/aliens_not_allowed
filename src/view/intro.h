@@ -11,9 +11,9 @@
 #include "../lib/basicStructures.h"
 #include "texture.h"
 
-void intro_initialize();
+//void intro_initialize();
+//void intro_updateStarrySky();
 void intro_incrementOffset();
-void intro_updateStarrySky();
 void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame);
 
 //void intro_keyboardDownFunc(int key, int x, int y);

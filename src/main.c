@@ -111,7 +111,6 @@ void drawScene(){
     default:
         break;
     }
-
     glutSwapBuffers();
 }
 
@@ -189,9 +188,10 @@ int main(int argc, char **argv){
     glutInitContextVersion(1, 1); 
     glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
-    glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-    glutInitWindowPosition( 50, 50 );
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+    glutInitWindowSize( glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT) ); // maximize window
+    //glutInitWindowSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+    //glutInitWindowPosition( 50, 50 );
 
     glutCreateWindow( "TP1 - Galaxian: Pedro Vaz e Mateus Lemos" );
 
