@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <math.h>
+#include <stdio.h>
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -12,17 +14,16 @@
 #include "./view/game.h"
 #include "./view/afterGame.h"
 
-//Handling textures
+//Handle textures
 #include "./view/texture.h"
 
-//Handling keyboard events
+//Handle keyboard events
 #include "./lib/keyboard.h"
 
 #define min(x,y) ((x) < (y) ? (x) : (y))
 #define PLAYER_INITIAL_Y_POS 350
 
-#define SCREEN_WIDTH 600
-#define SCREEN_HEIGHT 600
+bool mouseInBounds = false;
 
 Player player;
 
@@ -44,12 +45,12 @@ void initialize(){
 
     //newTextureID([TEXTURE PATH]) // TEXTURE ID GOES UP BY ONE EVERYTIME newTextureID IS CALLED
 
-    newTextureID("../assets/player_spaceship.png"); //0
-    newTextureID("../assets/purple_enemy.png"); //1
-    newTextureID("../assets/intro_bg.png"); //2
-    newTextureID("../assets/intro_mg1.png"); //3
-    newTextureID("../assets/intro_mg2.png"); //4
-    newTextureID("../assets/starry_sky.png"); //5
+    newTextureID("../assets/player_spaceship.png"); // 0
+    newTextureID("../assets/purple_enemy.png"); // 1
+    newTextureID("../assets/intro_bg.png");  // 2
+    newTextureID("../assets/intro_mg1.png"); // 3
+    newTextureID("../assets/intro_mg2.png"); // 4
+    newTextureID("../assets/starry_sky.png"); // 5
 
     generateViewList(2000, 2000, 0, 1, rgb_white); //white background
 
@@ -66,8 +67,37 @@ void initialize(){
     main_startNewGame = false;
 }
 
-void reshape(int width, int height){
+Vector2D coordinatesTranslator(int x, int y){
+    int currentWidth  = glutGet(GLUT_WINDOW_WIDTH);
+    int currentHeight = glutGet(GLUT_WINDOW_HEIGHT);
 
+    int smallestSizeValue = min(currentWidth, currentHeight);
+
+    Vector2D windowCenter;
+    windowCenter.x = currentWidth/2;
+    windowCenter.y = currentHeight/2;
+
+    Vector2D translatedCoordinates;
+
+    if (x <= windowCenter.x + smallestSizeValue/2 &&
+        x >= windowCenter.x - smallestSizeValue/2 &&
+        y <= windowCenter.y + smallestSizeValue/2 &&
+        y >= windowCenter.y - smallestSizeValue/2){
+            mouseInBounds = true;
+    } else{
+        mouseInBounds = false;
+        return translatedCoordinates;
+    }
+    // The in bounds area is a square whith 1000 unitis for each side
+    double relativeValue = (double)1000/smallestSizeValue;
+
+    translatedCoordinates.x = round( (double)(x - windowCenter.x) * relativeValue );
+    translatedCoordinates.y = round( (-1) * (double)(y - windowCenter.y) * relativeValue);
+
+    return translatedCoordinates;
+}
+
+void reshape_callback(int width, int height){
     // Set the game-square size as the bigger dimension (height or width)
     int squareSize = min(width, height);
 
@@ -93,14 +123,14 @@ void reshape(int width, int height){
     glLoadIdentity();
 }
 
-void drawScene(){
+void drawScene_callback(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
     
     // &main_screenDef as parameter to enable switch between scenes
     // &main_startNewGame as parameter to choose between create and continue games
     switch (main_screenDef){ 
     case intro:
-        intro_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
+        intro_drawScene();
         break;
     case game:
         game_drawScene(&main_screenDef, &main_startNewGame, &player);
@@ -114,62 +144,87 @@ void drawScene(){
     glutSwapBuffers();
 }
 
-void update(){
+void update_callback(){
     glutPostRedisplay();
 }
 
-void keyDown (unsigned char key, int x, int y){
+void keyDown_callback(unsigned char key, int x, int y){
     keyState[key] = true;
 
     switch (main_screenDef){
-    case intro:
+    case(intro):
         //intro_keyDown(key, x, y);
         break;
-    case game:
+    case(game):
         game_keyDown(key, x, y, &player);
         break;
-    case afterGame:
+    case(afterGame):
         //afterGame_pressedKey(key, x, y);
         break;
     default:
         break;
     }
-
 }
 
-void keyUp (unsigned char key, int x, int y){
+void keyUp_callback(unsigned char key, int x, int y){
     keyState[key] = false;
 
     switch(main_screenDef){
-        case game:
+        case(game):
             game_keyUp(key, x, y, &player);
+            break;
     }
 }
 
-void specialKeyDown (int key, int x, int y){
+void specialKeyDown_callback(int key, int x, int y){
     switch(main_screenDef){
-        case game:
+        case(intro):
+            intro_specialKeyDownFunc(key, x, y);
+            break;
+        case(game):
             game_specialKeyDown(key, x, y, &player);
+            break;
     }
 }
 
-void specialKeyUp (int key, int x, int y){
+void specialKeyUp_callback(int key, int x, int y){
     switch(main_screenDef){
-        case game:
+        case(game):
             game_specialKeyUp(key, x, y, &player);
+            break;
     }
 }
 
-void mouseGestures(int button, int state, int x, int y){
+void mouseActiveFunc_callback(int button, int state, int x, int y){
+    Vector2D translatedCoordinates = coordinatesTranslator(x, y);
+
     switch (main_screenDef){
     case intro:
-        //intro_mouseGestures(button, state, x, y);
+        //intro_mouseActiveFunc(button, state, x, y);
         break;
     case game:
-        //game_mouseGestures(button, state, x, y);
+        //game_mouseActiveFunc(button, state, x, y);
         break;
     case afterGame:
-        //afterGame_mouseGestures(button, state, x, y);
+        //afterGame_mouseActiveFunc(button, state, x, y);
+        break;
+    default:
+        break;
+    }
+}
+
+void mousePassiveFunc_callback(int x, int y){
+    Vector2D translatedCoordinates = coordinatesTranslator(x, y);
+
+    switch (main_screenDef){
+    case intro:
+        intro_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
+        break;
+    case game:
+        //game_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
+        break;
+    case afterGame:
+        //afterGame_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
         break;
     default:
         break;
@@ -189,24 +244,25 @@ int main(int argc, char **argv){
     glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowSize( glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT) ); // maximize window
-    //glutInitWindowSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-    //glutInitWindowPosition( 50, 50 );
+    glutInitWindowSize( 500, 500 );
+    glutInitWindowPosition( 50, 50 );
 
     glutCreateWindow( "TP1 - Galaxian: Pedro Vaz e Mateus Lemos" );
 
-    glutDisplayFunc(drawScene);
-    glutReshapeFunc(reshape);
+    glutDisplayFunc(drawScene_callback);
+    glutReshapeFunc(reshape_callback);
 
     glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_ON); //avoid successive calls to a function whenever a key is pressed and held
 
-    glutKeyboardFunc(keyDown);
-    glutKeyboardUpFunc(keyUp);
-    glutSpecialFunc(specialKeyDown);
-    glutSpecialUpFunc(specialKeyUp);
-    glutMouseFunc(mouseGestures);
+    glutKeyboardFunc(keyDown_callback);
+    glutKeyboardUpFunc(keyUp_callback);
+    glutSpecialFunc(specialKeyDown_callback);
+    glutSpecialUpFunc(specialKeyUp_callback);
 
-    glutIdleFunc(update);
+    glutMouseFunc(mouseActiveFunc_callback);
+    glutPassiveMotionFunc(mousePassiveFunc_callback);
+
+    glutIdleFunc(update_callback);
     glutTimerFunc(100, timerFunc, 1); //update every 0.1 second
 
     initialize();

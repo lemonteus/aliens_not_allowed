@@ -49,7 +49,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "Compiling main.c"
-gcc -o tp1.out main.c lib/player.o view/texture.o view/intro.o view/game.o lib/fonts.o -lGL -lglut -lSOIL
+gcc -o tp1.out main.c lib/player.o view/texture.o view/intro.o view/game.o lib/fonts.o -lGL -lglut -lSOIL -lm
 if [ $? -ne 0 ]; then
     deleteFilesFunc
     exit 1
@@ -58,7 +58,7 @@ fi
 echo -e "\nCompiled and finished!"
 deleteFilesFunc
 
-echo -e "\nInitializing game..."
+echo -e "\nInitializing game...\n"
 ./tp1.out
 
 exit 0

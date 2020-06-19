@@ -24,7 +24,8 @@ typedef struct{
 typedef struct{
     char text[buttonTextMaxSize];
     unsigned int numberCharacters;
-    Entity positionAndDimensions; // top-left vertex position
+    Vector2D position; // top-left vertex position
+    Vector2D dimensions;
     unsigned int textureID;
 } Button;
 
