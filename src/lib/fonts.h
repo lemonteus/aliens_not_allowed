@@ -8,5 +8,6 @@
 
 void drawText_GLUT(void * font , char *text, float x, float y, float z);
 void drawTextCentralized_GLUT(void * font, char *text, float x, float y, float z);
+void drawTextAlignRight_GLUT(void * font , char *text, float x, float y, float z);
 
 #endif //_FONTS_C_

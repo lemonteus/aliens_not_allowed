@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 
 #include <SOIL/SOIL.h>
@@ -9,7 +10,7 @@
 
 #include "intro.h"
 
-enum intro_state {stateMain = 1, stateControl, stateHighScores, stateCredits};
+enum intro_state {stateMain = 1, stateControls, stateHighScores, stateCredits};
 enum intro_selectedButton {playButton = 1, controlButton, highScoresButton, creditsButton};
 
 enum intro_state intro_currentState = stateMain;
@@ -19,32 +20,23 @@ bool intro_reset = true;
 int starrySkyOffset = 0;
 
 Button intro_buttons[4];
+Button intro_overlayReturnButton;
+
 
 void intro_createButtons(){
     typedef struct{
         char content[buttonTextMaxSize]; // buttonTextMaxSize defined at basicStructures.h
-        unsigned int numberOfCharacter;
     } buttonText;
 
     buttonText buttonTextArray[4];
-
     strcpy(buttonTextArray[0].content, "PLAY");
-    buttonTextArray[0].numberOfCharacter = strlen(buttonTextArray[0].content);
-
     strcpy(buttonTextArray[1].content, "CONTROL");
-    buttonTextArray[1].numberOfCharacter = strlen(buttonTextArray[1].content);
-
     strcpy(buttonTextArray[2].content, "HIGH SCORES");
-    buttonTextArray[2].numberOfCharacter = strlen(buttonTextArray[2].content);
-
     strcpy(buttonTextArray[3].content, "CREDITS");
-    buttonTextArray[3].numberOfCharacter = strlen(buttonTextArray[3].content);
 
     for(int i = 0; i < 4; i++){
-        strcpy(intro_buttons[i].text, buttonTextArray[i].content);
-        intro_buttons[i].numberCharacters = buttonTextArray[i].numberOfCharacter;
-
         int height = 80;
+        strcpy(intro_buttons[i].text, buttonTextArray[i].content);
 
         intro_buttons[i].dimensions.x = 1000;   // width
         intro_buttons[i].dimensions.y = height;
@@ -52,22 +44,30 @@ void intro_createButtons(){
         //set the top-left vertice of the rectangle/button
         intro_buttons[i].position.x = -500;
         intro_buttons[i].position.y = -50 - (i * height);
+        intro_buttons[i].position.z =  7;
     }
+
+    //define intro_overlayReturnButton
+    strcpy(intro_overlayReturnButton.text, "RETURN");
+
+    intro_overlayReturnButton.position.x = -500;
+    intro_overlayReturnButton.position.y = -400;
+    intro_overlayReturnButton.position.z = 8;
+
+    intro_overlayReturnButton.dimensions.x = 100;
+    intro_overlayReturnButton.dimensions.y = 50;
 }
 
-void intro_drawButton(unsigned int buttonIndex){
-    if(intro_selectedButton - 1 == (int)buttonIndex)
-        glColor4f(0.867, 0.627, 0.867, 1.0); //rgb(221, 160, 221)
-    else
-        glColor4f(0.494, 0.424, 0.525, 0.5); //rgb(126, 108, 134)
+void intro_drawButton(Button button, float color[4], void * font){
+    glColor4f(color[0], color[1], color[2], color[3]);
 
-    int x = intro_buttons[(int)buttonIndex].position.x;
-    int y = intro_buttons[(int)buttonIndex].position.y;
-    int z = 7;
+    int x = button.position.x;
+    int y = button.position.y;
+    int z = button.position.z;
 
-    int width  = intro_buttons[(int)buttonIndex].dimensions.x;
-    int height = intro_buttons[(int)buttonIndex].dimensions.y;
-    
+    int width  = button.dimensions.x;
+    int height = button.dimensions.y;
+
     glBegin(GL_POLYGON);
         glVertex3f( x, y,          z); // top-left
         glVertex3f(-x, y,          z); // top-right
@@ -75,12 +75,31 @@ void intro_drawButton(unsigned int buttonIndex){
         glVertex3f( x, y - height, z); // bottom-left
     glEnd();
 
-    y -= (height/2) + ( glutBitmapHeight(GLUT_BITMAP_HELVETICA_18) / 2 );
-    z += 1;
+    x += width/2;
+    y -= (height/2) + ( glutBitmapHeight(font) / 2 );
+    z++;
 
-    // write text above buttons
+    // write text above buttons' z-coordinate
     glColor4f(0.0, 0.0, 0.0, 1.0);
-    drawTextCentralized_GLUT(GLUT_BITMAP_HELVETICA_18, intro_buttons[(int)buttonIndex].text, 0, y, z);
+    drawTextCentralized_GLUT(font, button.text, x, y, z);
+}
+
+void intro_drawStateMainButtons(){
+    for(int buttonIndex = 0; buttonIndex < 4; buttonIndex++){
+        float color[4];
+        if(intro_selectedButton - 1 == (int)buttonIndex){ //rgb(221, 160, 221)
+            color[0] = 0.867;
+            color[1] = 0.627;
+            color[2] = 0.867;
+            color[3] = 1.0;
+        } else{ //rgb(126, 108, 134)
+            color[0] = 0.494;
+            color[1] = 0.424;
+            color[2] = 0.525;
+            color[3] = 0.5;
+        }
+        intro_drawButton(intro_buttons[buttonIndex], color, GLUT_BITMAP_HELVETICA_18);
+    }
 }
 
 void intro_initialize(){
@@ -129,6 +148,75 @@ void intro_updateStarrySky(){
 	glEnd();
 }
 
+void intro_drawOverlays(){
+    if(intro_currentState != stateMain){
+        glColor4f(1.0, 1.0, 1.0, 0.6);
+        glBegin(GL_POLYGON);
+            glVertex3f( -500,  500, 7);
+            glVertex3f(  500,  500, 7);
+            glVertex3f(  500, -500, 7);
+            glVertex3f( -500, -500, 7);
+        glEnd();
+
+        int x = -400;
+        int y =  400;
+        int z =  8;
+
+        int lineSpacing = 40;
+
+        switch(intro_currentState){
+            case(stateControls):
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CONTROLS", x, y, z);
+
+                x += 10;
+                y -= 50;
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Directional arrors :", x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "move horizontally the ship", -x, y, z);
+
+                y-= lineSpacing;
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "P button :", x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "pause/resume game", -x, y, z);
+
+                y-= lineSpacing;
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "R button :", x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "restart game", -x, y, z);
+
+                y-= lineSpacing;
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "ESC :", x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "quit game", -x, y, z);
+
+                float overlayButtonColor[4] = {0.867, 0.627, 0.867, 1.0};
+
+                intro_drawButton(intro_overlayReturnButton, overlayButtonColor, GLUT_BITMAP_HELVETICA_18);
+            break;
+            case(stateHighScores):
+                /* tentar abrir highScores.csv na pasta ../src
+                    se nao existir, criar
+                      dizer qua não há dados suficientes para criar a lista
+                   ler arquivo em csv (<nome>,<pontos>\n)
+                */
+            break;
+            case(stateCredits):
+                /*
+                    info
+
+                    developers
+                    pedro vaz and mateus lemos
+
+                    mentor
+                    flavio coitinho
+
+                    Source code
+                    github.com/holovaz/tp1-galaxian
+                */
+
+
+            break;
+        }
+    }
+}
+
+
 void intro_drawScene(){
     if(intro_reset)
         intro_initialize();
@@ -155,12 +243,10 @@ void intro_drawScene(){
 
     // game title on screen
     glColor3f(1.0, 1.0, 1.0);
-    drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "TP1 Galaxian", 0, 200, 6);
+    drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "TP1 - GALAXIAN", 0, 200, 6);
 
-    // draw buttons
-    for(int buttonIndex = 0; buttonIndex < 4; buttonIndex++){
-        intro_drawButton(buttonIndex);
-    }
+    intro_drawStateMainButtons();
+    intro_drawOverlays();
     
     glColor3f(1.0, 1.0, 1.0);
 }
@@ -181,22 +267,28 @@ void intro_specialKeyDownFunc(int key, int x, int y){
 }
 
 void intro_mousePassiveFunc(int x, int y, bool mouseInBounds){
-
     if(mouseInBounds){
-        int buttonHeight = intro_buttons[0].dimensions.y; // all heights have the same value
+        if(intro_currentState == stateMain){
+            int buttonHeight = intro_buttons[0].dimensions.y; // all heights have the same value
 
-        for(int buttonCounter = 0; buttonCounter < 4;  buttonCounter++){
-            int buttonPositionY = intro_buttons[buttonCounter].position.y;
-            if (y <= buttonPositionY && y >= buttonPositionY - buttonHeight)
-                intro_selectedButton = buttonCounter +1;
+            for(int buttonCounter = 0; buttonCounter < 4;  buttonCounter++){
+                int buttonPositionY = intro_buttons[buttonCounter].position.y;
+                if (y <= buttonPositionY && y >= buttonPositionY - buttonHeight)
+                    intro_selectedButton = buttonCounter + 1;
+            }
         }
+        // outros current satates pra implementar
     }
 
 }
+
+void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBounds, enum basicStructures_screen *screenDef){
+
+}
+
 
 
 //se a pagina for alterada: intro_reset = true;
 
 //void intro_keyboardDownFunc(int key, int x, int y);
 //void intro_keyboardUpFunc(int key, int x, int y);
-

@@ -27,7 +27,7 @@ bool mouseInBounds = false;
 
 Player player;
 
-enum basicStructures_screen main_screenDef = intro;
+enum basicStructures_screen main_screenDef = intro; // { intro, game, afterGame }
 bool main_startNewGame = true;
 
 void initialize(){
@@ -195,24 +195,6 @@ void specialKeyUp_callback(int key, int x, int y){
     }
 }
 
-void mouseActiveFunc_callback(int button, int state, int x, int y){
-    Vector2D translatedCoordinates = coordinatesTranslator(x, y);
-
-    switch (main_screenDef){
-    case intro:
-        //intro_mouseActiveFunc(button, state, x, y);
-        break;
-    case game:
-        //game_mouseActiveFunc(button, state, x, y);
-        break;
-    case afterGame:
-        //afterGame_mouseActiveFunc(button, state, x, y);
-        break;
-    default:
-        break;
-    }
-}
-
 void mousePassiveFunc_callback(int x, int y){
     Vector2D translatedCoordinates = coordinatesTranslator(x, y);
 
@@ -225,6 +207,24 @@ void mousePassiveFunc_callback(int x, int y){
         break;
     case afterGame:
         //afterGame_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
+        break;
+    default:
+        break;
+    }
+}
+
+void mouseActiveFunc_callback(int button, int state, int x, int y){
+    Vector2D translatedCoordinates = coordinatesTranslator(x, y);
+
+    switch (main_screenDef){
+    case intro:
+        intro_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_screenDef);
+        break;
+    case game:
+        //game_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
+        break;
+    case afterGame:
+        //afterGame_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
         break;
     default:
         break;
