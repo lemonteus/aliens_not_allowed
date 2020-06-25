@@ -22,7 +22,6 @@ int starrySkyOffset = 0;
 Button intro_buttons[4];
 Button intro_overlayReturnButton;
 
-
 void intro_createButtons(){
     typedef struct{
         char content[buttonTextMaxSize]; // buttonTextMaxSize defined at basicStructures.h
@@ -150,7 +149,7 @@ void intro_updateStarrySky(){
 
 void intro_drawOverlays(){
     if(intro_currentState != stateMain){
-        glColor4f(1.0, 1.0, 1.0, 0.6);
+        glColor4f(0.0, 0.0, 0.0, 0.6);
         glBegin(GL_POLYGON);
             glVertex3f( -500,  500, 7);
             glVertex3f(  500,  500, 7);
@@ -164,6 +163,7 @@ void intro_drawOverlays(){
 
         int lineSpacing = 40;
 
+        glColor4f(0.0, 0.0, 0.0, 1.0);
         switch(intro_currentState){
             case(stateControls):
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CONTROLS", x, y, z);
@@ -171,7 +171,7 @@ void intro_drawOverlays(){
                 x += 10;
                 y -= 50;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Directional arrors :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "move horizontally the ship", -x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "move horizontally the spaceship", -x, y, z);
 
                 y-= lineSpacing;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "P button :", x, y, z);
@@ -185,34 +185,45 @@ void intro_drawOverlays(){
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "ESC :", x, y, z);
                 drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "quit game", -x, y, z);
 
-                float overlayButtonColor[4] = {0.867, 0.627, 0.867, 1.0};
-
-                intro_drawButton(intro_overlayReturnButton, overlayButtonColor, GLUT_BITMAP_HELVETICA_18);
             break;
             case(stateHighScores):
-                /* tentar abrir highScores.csv na pasta ../src
-                    se nao existir, criar
-                      dizer qua não há dados suficientes para criar a lista
-                   ler arquivo em csv (<nome>,<pontos>\n)
-                */
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "HIGH SCORES", x, y, z);
+
+                x += 10;
+                y -= 50;
+
+                FILE *highScoresFilePtr = fopen("../../highScores.csv", 'r');
+
+                if(highScoresFilePtr == NULL){
+                    fclose(highScoresFilePtr);
+                    drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "There is no data avaliable.", x, y, z);
+                } else{
+                    // ler csv (<nome>,<pontos>\n)
+                    // imprimir placares
+                }
+
             break;
             case(stateCredits):
-                /*
-                    info
+               drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CREDITS", x, y, z);
 
-                    developers
-                    pedro vaz and mateus lemos
+                x += 10;
+                y -= 50;
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Developers :", x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "Pedro Vaz and Mateus Lemos", -x, y, z);
 
-                    mentor
-                    flavio coitinho
+                y-= lineSpacing;
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Mentor :", x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "Flavio Coutinho", -x, y, z);
 
-                    Source code
-                    github.com/holovaz/tp1-galaxian
-                */
-
+                y-= lineSpacing;
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Source code :", x, y, z);
+                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "github.com/HoloVaz/TP1-Galaxian", -x, y, z);
 
             break;
         }
+
+        float overlayButtonColor[4] = {0.867, 0.627, 0.867, 1.0};
+        intro_drawButton(intro_overlayReturnButton, overlayButtonColor, GLUT_BITMAP_HELVETICA_18);
     }
 }
 
@@ -285,7 +296,6 @@ void intro_mousePassiveFunc(int x, int y, bool mouseInBounds){
 void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBounds, enum basicStructures_screen *screenDef){
 
 }
-
 
 
 //se a pagina for alterada: intro_reset = true;
