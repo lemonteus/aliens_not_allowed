@@ -47,13 +47,13 @@ void intro_createButtons(){
     }
 
     //define intro_overlayReturnButton
-    strcpy(intro_overlayReturnButton.text, "RETURN");
+    strcpy(intro_overlayReturnButton.text, "Return");
 
-    intro_overlayReturnButton.position.x = -500;
+    intro_overlayReturnButton.position.x = -100;
     intro_overlayReturnButton.position.y = -400;
-    intro_overlayReturnButton.position.z = 8;
+    intro_overlayReturnButton.position.z = 9;
 
-    intro_overlayReturnButton.dimensions.x = 100;
+    intro_overlayReturnButton.dimensions.x = 200;
     intro_overlayReturnButton.dimensions.y = 50;
 }
 
@@ -149,21 +149,21 @@ void intro_updateStarrySky(){
 
 void intro_drawOverlays(){
     if(intro_currentState != stateMain){
-        glColor4f(0.0, 0.0, 0.0, 0.6);
+        glColor4f(0.0, 0.0, 0.0, 0.8);
         glBegin(GL_POLYGON);
-            glVertex3f( -500,  500, 7);
-            glVertex3f(  500,  500, 7);
-            glVertex3f(  500, -500, 7);
-            glVertex3f( -500, -500, 7);
+            glVertex3f( -500,  500, 8);
+            glVertex3f(  500,  500, 8);
+            glVertex3f(  500, -500, 8);
+            glVertex3f( -500, -500, 8);
         glEnd();
 
         int x = -400;
         int y =  400;
-        int z =  8;
+        int z =  9;
 
         int lineSpacing = 40;
 
-        glColor4f(0.0, 0.0, 0.0, 1.0);
+        glColor4f(1.0, 1.0, 1.0, 1.0);
         switch(intro_currentState){
             case(stateControls):
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CONTROLS", x, y, z);
@@ -192,10 +192,10 @@ void intro_drawOverlays(){
                 x += 10;
                 y -= 50;
 
-                FILE *highScoresFilePtr = fopen("../../highScores.csv", 'r');
-
+                //FILE *highScoresFilePtr = fopen("../../highScores.csv", 'r');
+                FILE *highScoresFilePtr = NULL;
                 if(highScoresFilePtr == NULL){
-                    fclose(highScoresFilePtr);
+                    //fclose(highScoresFilePtr);
                     drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "There is no data avaliable.", x, y, z);
                 } else{
                     // ler csv (<nome>,<pontos>\n)
@@ -288,13 +288,54 @@ void intro_mousePassiveFunc(int x, int y, bool mouseInBounds){
                     intro_selectedButton = buttonCounter + 1;
             }
         }
-        // outros current satates pra implementar
+        // outros current states pra implementar
     }
 
 }
 
 void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBounds, enum basicStructures_screen *screenDef){
+    if(mouseInBounds){
+        if(intro_currentState == stateMain){
+            int buttonHeight = intro_buttons[0].dimensions.y; // all heights have the same value
 
+            for(int buttonCounter = 0; buttonCounter < 4;  buttonCounter++){
+                int buttonPositionY = intro_buttons[buttonCounter].position.y;
+                if (y <= buttonPositionY && y >= buttonPositionY - buttonHeight)
+                    intro_selectedButton = buttonCounter + 1;
+
+                    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
+                        switch(intro_selectedButton){
+                            case(playButton):
+                                *screenDef = game;
+                            break;
+                            case(controlButton):
+                                intro_currentState = stateControls;
+                            break;
+                            case(highScoresButton):
+                                intro_currentState = stateHighScores;
+                            break;
+                            case(creditsButton):
+                                intro_currentState = stateCredits;
+                            break;
+                        }
+                    }
+            }
+        } else{ //check if the return button is clicked
+            Vector2D position, dimensions;
+            position.x = intro_overlayReturnButton.position.x;
+            position.y = intro_overlayReturnButton.position.y;
+
+            dimensions.x = intro_overlayReturnButton.dimensions.x;
+            dimensions.y = intro_overlayReturnButton.dimensions.y;
+
+            if(y <= position.y && y >= position.y - dimensions.y &&
+               x >= position.x && x <= position.x + dimensions.x ){
+                   intro_currentState = stateMain;
+               }
+            
+
+        }
+    }
 }
 
 
