@@ -227,7 +227,6 @@ void intro_drawOverlays(){
     }
 }
 
-
 void intro_drawScene(){
     if(intro_reset)
         intro_initialize();
@@ -290,7 +289,6 @@ void intro_mousePassiveFunc(int x, int y, bool mouseInBounds){
         }
         // outros current states pra implementar
     }
-
 }
 
 void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBounds, enum basicStructures_screen *screenDef){
@@ -307,6 +305,7 @@ void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBoun
                         switch(intro_selectedButton){
                             case(playButton):
                                 *screenDef = game;
+                                intro_reset = true;
                             break;
                             case(controlButton):
                                 intro_currentState = stateControls;
@@ -332,14 +331,38 @@ void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBoun
                x >= position.x && x <= position.x + dimensions.x ){
                    intro_currentState = stateMain;
                }
-            
-
         }
     }
 }
 
+void intro_keyboardDownFunc(int key, int x, int y, enum basicStructures_screen *screenDef){
+    if(intro_currentState == stateMain){
+        if(key == 13 || key == 32){ // Enter || Spacebar
+            switch(intro_selectedButton){
+                case(playButton):
+                    *screenDef = game;
+                    intro_reset = true;
+                break;
+                case(controlButton):
+                    intro_currentState = stateControls;
+                break;
+                case(highScoresButton):
+                    intro_currentState = stateHighScores;
+                break;
+                case(creditsButton):
+                    intro_currentState = stateCredits;
+                break;
+            }
+        }
+        if(key == 27) // ESC
+            exit(0);
+    } else{
+        if(key == 13 || key == 32 || key == 8 || key == 27){ // Enter || Spacebar || Backspace || ESC
+            intro_currentState = stateMain;
+        }
+    }    
+}
 
 //se a pagina for alterada: intro_reset = true;
 
-//void intro_keyboardDownFunc(int key, int x, int y);
 //void intro_keyboardUpFunc(int key, int x, int y);

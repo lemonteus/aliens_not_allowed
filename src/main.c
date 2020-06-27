@@ -153,7 +153,7 @@ void keyDown_callback(unsigned char key, int x, int y){
 
     switch (main_screenDef){
     case(intro):
-        //intro_keyDown(key, x, y);
+        intro_keyboardDownFunc(key, x, y, &main_screenDef);
         break;
     case(game):
         game_keyDown(key, x, y, &player);
