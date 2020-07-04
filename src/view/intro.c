@@ -10,8 +10,8 @@
 
 #include "intro.h"
 
-enum intro_state {stateMain = 1, stateControls, stateHighScores, stateCredits};
-enum intro_selectedButton {playButton = 1, controlButton, highScoresButton, creditsButton};
+enum intro_state {stateMain = 1, stateControls, stateCredits};
+enum intro_selectedButton {playButton = 1, controlButton, creditsButton};
 
 enum intro_state intro_currentState = stateMain;
 enum intro_selectedButton intro_selectedButton = playButton;
@@ -19,7 +19,7 @@ enum intro_selectedButton intro_selectedButton = playButton;
 bool intro_reset = true;
 int starrySkyOffset = 0;
 
-Button intro_buttons[4];
+Button intro_buttons[3];
 Button intro_overlayReturnButton;
 
 void intro_createButtons(){
@@ -30,10 +30,9 @@ void intro_createButtons(){
     buttonText buttonTextArray[4];
     strcpy(buttonTextArray[0].content, "PLAY");
     strcpy(buttonTextArray[1].content, "CONTROL");
-    strcpy(buttonTextArray[2].content, "HIGH SCORES");
-    strcpy(buttonTextArray[3].content, "CREDITS");
+    strcpy(buttonTextArray[2].content, "CREDITS");
 
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 3; i++){
         int height = 80;
         strcpy(intro_buttons[i].text, buttonTextArray[i].content);
 
@@ -171,37 +170,19 @@ void intro_drawOverlays(){
                 x += 10;
                 y -= 50;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Directional arrors :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "move horizontally the spaceship", -x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "move horizontally the spaceship", 0, y, z);
 
                 y-= lineSpacing;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "P button :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "pause/resume game", -x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "pause/resume game", 0, y, z);
 
                 y-= lineSpacing;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "R button :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "restart game", -x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "restart game", 0, y, z);
 
                 y-= lineSpacing;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "ESC :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "quit game", -x, y, z);
-
-            break;
-            case(stateHighScores):
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "HIGH SCORES", x, y, z);
-
-                x += 10;
-                y -= 50;
-
-                //FILE *highScoresFilePtr = fopen("../../highScores.csv", 'r');
-                FILE *highScoresFilePtr = NULL;
-                if(highScoresFilePtr == NULL){
-                    //fclose(highScoresFilePtr);
-                    drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "There is no data avaliable.", x, y, z);
-                } else{
-                    // ler csv (<nome>,<pontos>\n)
-                    // imprimir placares
-                }
-
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "quit game", 0, y, z);
             break;
             case(stateCredits):
                drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CREDITS", x, y, z);
@@ -209,16 +190,15 @@ void intro_drawOverlays(){
                 x += 10;
                 y -= 50;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Developers :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "Pedro Vaz and Mateus Lemos", -x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Pedro Vaz and Mateus Lemos", 0, y, z);
 
                 y-= lineSpacing;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Mentor :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "Flavio Coutinho", -x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Flavio Coutinho", 0, y, z);
 
                 y-= lineSpacing;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Source code :", x, y, z);
-                drawTextAlignRight_GLUT(GLUT_BITMAP_HELVETICA_12, "github.com/HoloVaz/TP1-Galaxian", -x, y, z);
-
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "github.com/HoloVaz/TP1-Galaxian", 0, y, z);
             break;
         }
 
@@ -267,12 +247,12 @@ void intro_specialKeyDownFunc(int key, int x, int y){
         case(GLUT_KEY_PAGE_UP):
             if(intro_selectedButton > 1)
                 intro_selectedButton--;
-            break;
+        break;
         case(GLUT_KEY_DOWN):
         case(GLUT_KEY_PAGE_DOWN):
-            if(intro_selectedButton < 4)
+            if(intro_selectedButton < 3)
                 intro_selectedButton++;
-            break;
+        break;
     }
 }
 
@@ -281,13 +261,12 @@ void intro_mousePassiveFunc(int x, int y, bool mouseInBounds){
         if(intro_currentState == stateMain){
             int buttonHeight = intro_buttons[0].dimensions.y; // all heights have the same value
 
-            for(int buttonCounter = 0; buttonCounter < 4;  buttonCounter++){
+            for(int buttonCounter = 0; buttonCounter < 3;  buttonCounter++){
                 int buttonPositionY = intro_buttons[buttonCounter].position.y;
                 if (y <= buttonPositionY && y >= buttonPositionY - buttonHeight)
                     intro_selectedButton = buttonCounter + 1;
             }
         }
-        // outros current states pra implementar
     }
 }
 
@@ -310,9 +289,6 @@ void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBoun
                             case(controlButton):
                                 intro_currentState = stateControls;
                             break;
-                            case(highScoresButton):
-                                intro_currentState = stateHighScores;
-                            break;
                             case(creditsButton):
                                 intro_currentState = stateCredits;
                             break;
@@ -330,7 +306,7 @@ void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBoun
             if(y <= position.y && y >= position.y - dimensions.y &&
                x >= position.x && x <= position.x + dimensions.x ){
                    intro_currentState = stateMain;
-               }
+            }
         }
     }
 }
@@ -346,9 +322,6 @@ void intro_keyboardDownFunc(int key, int x, int y, enum basicStructures_screen *
                 case(controlButton):
                     intro_currentState = stateControls;
                 break;
-                case(highScoresButton):
-                    intro_currentState = stateHighScores;
-                break;
                 case(creditsButton):
                     intro_currentState = stateCredits;
                 break;
@@ -362,7 +335,3 @@ void intro_keyboardDownFunc(int key, int x, int y, enum basicStructures_screen *
         }
     }    
 }
-
-//se a pagina for alterada: intro_reset = true;
-
-//void intro_keyboardUpFunc(int key, int x, int y);

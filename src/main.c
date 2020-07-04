@@ -125,20 +125,17 @@ void reshape_callback(int width, int height){
 
 void drawScene_callback(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );	
-    
-    // &main_screenDef as parameter to enable switch between scenes
+
     // &main_startNewGame as parameter to choose between create and continue games
     switch (main_screenDef){ 
-    case intro:
-        intro_drawScene();
+        case intro:
+            intro_drawScene();
         break;
-    case game:
-        game_drawScene(&main_screenDef, &main_startNewGame, &player);
+        case game:
+            game_drawScene(&main_screenDef, &main_startNewGame, &player);
         break;
-    case afterGame:
-        //afterGame_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
-        break;
-    default:
+        case afterGame:
+            //afterGame_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
         break;
     }
     glutSwapBuffers();
@@ -152,16 +149,14 @@ void keyDown_callback(unsigned char key, int x, int y){
     keyState[key] = true;
 
     switch (main_screenDef){
-    case(intro):
-        intro_keyboardDownFunc(key, x, y, &main_screenDef);
+        case(intro):
+            intro_keyboardDownFunc(key, x, y, &main_screenDef);
         break;
-    case(game):
-        game_keyDown(key, x, y, &player);
+        case(game):
+            game_keyDown(key, x, y, &player);
         break;
-    case(afterGame):
-        //afterGame_pressedKey(key, x, y);
-        break;
-    default:
+        case(afterGame):
+            //afterGame_pressedKey(key, x, y);
         break;
     }
 }
@@ -172,7 +167,7 @@ void keyUp_callback(unsigned char key, int x, int y){
     switch(main_screenDef){
         case(game):
             game_keyUp(key, x, y, &player);
-            break;
+        break;
     }
 }
 
@@ -180,10 +175,10 @@ void specialKeyDown_callback(int key, int x, int y){
     switch(main_screenDef){
         case(intro):
             intro_specialKeyDownFunc(key, x, y);
-            break;
+        break;
         case(game):
             game_specialKeyDown(key, x, y, &player);
-            break;
+        break;
     }
 }
 
@@ -191,7 +186,7 @@ void specialKeyUp_callback(int key, int x, int y){
     switch(main_screenDef){
         case(game):
             game_specialKeyUp(key, x, y, &player);
-            break;
+        break;
     }
 }
 
@@ -199,16 +194,14 @@ void mousePassiveFunc_callback(int x, int y){
     Vector2D translatedCoordinates = coordinatesTranslator(x, y);
 
     switch (main_screenDef){
-    case intro:
-        intro_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
+        case intro:
+            intro_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
         break;
-    case game:
-        //game_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
+        case game:
+            //game_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
         break;
-    case afterGame:
-        //afterGame_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
-        break;
-    default:
+        case afterGame:
+            //afterGame_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
         break;
     }
 }
@@ -217,23 +210,20 @@ void mouseActiveFunc_callback(int button, int state, int x, int y){
     Vector2D translatedCoordinates = coordinatesTranslator(x, y);
 
     switch (main_screenDef){
-    case intro:
-        intro_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_screenDef);
+        case intro:
+            intro_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_screenDef);
         break;
-    case game:
-        //game_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
+        case game:
+            //game_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
         break;
-    case afterGame:
-        //afterGame_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
-        break;
-    default:
+        case afterGame:
+            //afterGame_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
         break;
     }
 }
 
 void timerFunc(int value){
 	intro_incrementOffset();
-
 	glutTimerFunc(100, timerFunc, 1); //call timerFunc recursively so it's forever looping
 }
 
