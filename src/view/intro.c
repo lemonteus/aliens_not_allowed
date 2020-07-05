@@ -27,10 +27,10 @@ void intro_internal_createButtons(){
         char content[buttonTextMaxSize]; // buttonTextMaxSize defined at basicStructures.h
     } buttonText;
 
-    buttonText buttonTextArray[4];
-    strcpy(buttonTextArray[0].content, "PLAY");
-    strcpy(buttonTextArray[1].content, "CONTROL");
-    strcpy(buttonTextArray[2].content, "CREDITS");
+    buttonText buttonTextArray[3];
+    strcpy(buttonTextArray[0].content, "JOGAR");
+    strcpy(buttonTextArray[1].content, "CONTROLES");
+    strcpy(buttonTextArray[2].content, "CREDITOS");
 
     for(int i = 0; i < 3; i++){
         int height = 80;
@@ -46,7 +46,7 @@ void intro_internal_createButtons(){
     }
 
     //define intro_overlayReturnButton
-    strcpy(intro_overlayReturnButton.text, "RETURN");
+    strcpy(intro_overlayReturnButton.text, "VOLTAR");
 
     intro_overlayReturnButton.position.x = -100;
     intro_overlayReturnButton.position.y = -400;

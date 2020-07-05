@@ -24,11 +24,12 @@
 #define PLAYER_INITIAL_Y_POS 350
 
 bool mouseInBounds = false;
+bool main_startNewGame = true;
 
 Player player;
+bool playerWonTheGame = false;
 
 enum basicStructures_screen main_screenDef = intro; // { intro, game, afterGame }
-bool main_startNewGame = true;
 
 void initialize(){
     glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -135,7 +136,7 @@ void drawScene_callback(){
             game_drawScene(&main_screenDef, &main_startNewGame, &player);
         break;
         case afterGame:
-            //afterGame_drawScene(&main_screenDef, &main_startNewGame); // start new game or close window
+            afterGame_drawScene(playerWonTheGame);
         break;
     }
     glutSwapBuffers();
@@ -156,7 +157,7 @@ void keyDown_callback(unsigned char key, int x, int y){
             game_keyDown(key, x, y, &player);
         break;
         case(afterGame):
-            //afterGame_pressedKey(key, x, y);
+            afterGame_keyboardDownFunc(key, x, y, &main_screenDef);
         break;
     }
 }
@@ -178,6 +179,9 @@ void specialKeyDown_callback(int key, int x, int y){
         break;
         case(game):
             game_specialKeyDown(key, x, y, &player);
+        break;
+        case(afterGame):
+            afterGame_specialKeyDownFunc(key, x, y);
         break;
     }
 }
@@ -201,7 +205,7 @@ void mousePassiveFunc_callback(int x, int y){
             //game_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
         break;
         case afterGame:
-            //afterGame_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
+            afterGame_mousePassiveFunc(translatedCoordinates.x, translatedCoordinates.y, mouseInBounds);
         break;
     }
 }
@@ -225,8 +229,9 @@ void mouseActiveFunc_callback(int button, int state, int x, int y){
 void timerFunc(int value){
     if(main_screenDef == intro)
 	    intro_incrementOffset();
-    //if(main_screenDef == afterGame)
-    //    afterGame_incrementOffset();
+    if(main_screenDef == afterGame)
+        afterGame_incrementOffSet();
+
 	glutTimerFunc(100, timerFunc, 1); //call timerFunc recursively so it's forever looping
 }
 
