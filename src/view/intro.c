@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <SOIL/SOIL.h>
 #include <GL/glew.h>
@@ -17,12 +17,12 @@ enum intro_state intro_currentState = stateMain;
 enum intro_selectedButton intro_selectedButton = playButton;
 
 bool intro_reset = true;
-int starrySkyOffset = 0;
+int intro_starrySkyOffset = 0;
 
 Button intro_buttons[3];
 Button intro_overlayReturnButton;
 
-void intro_createButtons(){
+void intro_internal_createButtons(){
     typedef struct{
         char content[buttonTextMaxSize]; // buttonTextMaxSize defined at basicStructures.h
     } buttonText;
@@ -36,7 +36,7 @@ void intro_createButtons(){
         int height = 80;
         strcpy(intro_buttons[i].text, buttonTextArray[i].content);
 
-        intro_buttons[i].dimensions.x = 1000;   // width
+        intro_buttons[i].dimensions.x = 1000; // width
         intro_buttons[i].dimensions.y = height;
         
         //set the top-left vertice of the rectangle/button
@@ -46,7 +46,7 @@ void intro_createButtons(){
     }
 
     //define intro_overlayReturnButton
-    strcpy(intro_overlayReturnButton.text, "Return");
+    strcpy(intro_overlayReturnButton.text, "RETURN");
 
     intro_overlayReturnButton.position.x = -100;
     intro_overlayReturnButton.position.y = -400;
@@ -56,7 +56,7 @@ void intro_createButtons(){
     intro_overlayReturnButton.dimensions.y = 50;
 }
 
-void intro_drawButton(Button button, float color[4], void * font){
+void intro_internal_drawButton(Button button, float color[4], void * font){
     glColor4f(color[0], color[1], color[2], color[3]);
 
     int x = button.position.x;
@@ -74,7 +74,7 @@ void intro_drawButton(Button button, float color[4], void * font){
     glEnd();
 
     x += width/2;
-    y -= (height/2) + ( glutBitmapHeight(font) / 2 );
+    y = y - (height/2) - ( glutBitmapHeight(font) / 2 );
     z++;
 
     // write text above buttons' z-coordinate
@@ -82,7 +82,7 @@ void intro_drawButton(Button button, float color[4], void * font){
     drawTextCentralized_GLUT(font, button.text, x, y, z);
 }
 
-void intro_drawStateMainButtons(){
+void intro_internal_drawStateMainButtons(){
     for(int buttonIndex = 0; buttonIndex < 4; buttonIndex++){
         float color[4];
         if(intro_selectedButton - 1 == (int)buttonIndex){ //rgb(221, 160, 221)
@@ -96,11 +96,11 @@ void intro_drawStateMainButtons(){
             color[2] = 0.525;
             color[3] = 0.5;
         }
-        intro_drawButton(intro_buttons[buttonIndex], color, GLUT_BITMAP_HELVETICA_18);
+        intro_internal_drawButton(intro_buttons[buttonIndex], color, GLUT_BITMAP_HELVETICA_18);
     }
 }
 
-void intro_initialize(){
+void intro_internal_initialize(){
     glClearColor(0.0, 0.0, 0.0, 1.0);
     
     glEnable(GL_BLEND); // enable support for texture transparency
@@ -113,7 +113,7 @@ void intro_initialize(){
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    intro_createButtons();
+    intro_internal_createButtons();
 
     intro_selectedButton = playButton;
     intro_currentState = stateMain;
@@ -121,32 +121,25 @@ void intro_initialize(){
     intro_reset = false;
 }
 
-void intro_incrementOffset(){
-    starrySkyOffset++;
-    
-    if (starrySkyOffset == 4000)
-		starrySkyOffset = 10; // reset starry sky background
-}
-
-void intro_updateStarrySky(){
+void intro_internal_updateStarrySky(){
     glBindTexture(GL_TEXTURE_2D, getTextureID(5));
 
 	glBegin(GL_POLYGON);
 		glTexCoord2f(0, 1);
-        glVertex3f(  -500  - starrySkyOffset,  500, 3);
+        glVertex3f(  -500  - intro_starrySkyOffset,  500, 3);
 
 		glTexCoord2f(1, 1);
-        glVertex3f( 8000/2 - starrySkyOffset,  500, 3);
+        glVertex3f( 8000/2 - intro_starrySkyOffset,  500, 3);
 
 		glTexCoord2f(1, 0);
-        glVertex3f( 8000/2 - starrySkyOffset, -500, 3);
+        glVertex3f( 8000/2 - intro_starrySkyOffset, -500, 3);
 
 		glTexCoord2f(0, 0);
-        glVertex3f(  -500  - starrySkyOffset, -500, 3);
+        glVertex3f(  -500  - intro_starrySkyOffset, -500, 3);
 	glEnd();
 }
 
-void intro_drawOverlays(){
+void intro_internal_drawOverlays(){
     if(intro_currentState != stateMain){
         glColor4f(0.0, 0.0, 0.0, 0.8);
         glBegin(GL_POLYGON);
@@ -203,19 +196,26 @@ void intro_drawOverlays(){
         }
 
         float overlayButtonColor[4] = {0.867, 0.627, 0.867, 1.0};
-        intro_drawButton(intro_overlayReturnButton, overlayButtonColor, GLUT_BITMAP_HELVETICA_18);
+        intro_internal_drawButton(intro_overlayReturnButton, overlayButtonColor, GLUT_BITMAP_HELVETICA_18);
     }
+}
+
+void intro_incrementOffset(){
+    intro_starrySkyOffset++;
+    
+    if (intro_starrySkyOffset == 4000)
+		intro_starrySkyOffset = 10; // reset starry sky background
 }
 
 void intro_drawScene(){
     if(intro_reset)
-        intro_initialize();
+        intro_internal_initialize();
 
     glColor3f(1.0, 1.0, 1.0);
     glEnable(GL_TEXTURE_2D);
 
     glCallList(getViewList(7));
-    intro_updateStarrySky();
+    intro_internal_updateStarrySky();
     glCallList(getViewList(8));
     glCallList(getViewList(9));
 
@@ -235,8 +235,8 @@ void intro_drawScene(){
     glColor3f(1.0, 1.0, 1.0);
     drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "TP1 - GALAXIAN", 0, 200, 6);
 
-    intro_drawStateMainButtons();
-    intro_drawOverlays();
+    intro_internal_drawStateMainButtons();
+    intro_internal_drawOverlays();
     
     glColor3f(1.0, 1.0, 1.0);
 }
