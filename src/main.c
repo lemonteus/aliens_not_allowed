@@ -223,7 +223,10 @@ void mouseActiveFunc_callback(int button, int state, int x, int y){
 }
 
 void timerFunc(int value){
-	intro_incrementOffset();
+    if(main_screenDef == intro)
+	    intro_incrementOffset();
+    //if(main_screenDef == afterGame)
+    //    afterGame_incrementOffset();
 	glutTimerFunc(100, timerFunc, 1); //call timerFunc recursively so it's forever looping
 }
 
