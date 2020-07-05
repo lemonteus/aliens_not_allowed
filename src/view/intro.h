@@ -1,8 +1,7 @@
 #ifndef _INTRO_H_
 #define _INTRO_H_
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 
 #include <SOIL/SOIL.h>
@@ -11,14 +10,11 @@
 #include "../lib/basicStructures.h"
 #include "texture.h"
 
-void intro_writeWordInCharArray(char *array, unsigned int arraySize, char* word, unsigned int wordSize);
-void intro_initialize();
-void intro_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame);
 void intro_incrementOffset();
-void intro_updateStarrySky();
-//void intro_keyboardDownFunc(int key, int x, int y);
-//void intro_keyboardUpFunc(int key, int x, int y);
-//void intro_specialKeyDownFunc(int key, int x, int y);
-//void intro_specialKeyUpFunc(int key, int x, int y);
+void intro_drawScene();
+void intro_specialKeyDownFunc(int key, int x, int y);
+void intro_mousePassiveFunc(int x, int y, bool mouseInBounds);
+void intro_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBounds, enum basicStructures_screen *screenDef);
+void intro_keyboardDownFunc(int key, int x, int y, enum basicStructures_screen *screenDef);
 
-#endif // _INTRO_H_
+#endif //_INTRO_H_

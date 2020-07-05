@@ -11,9 +11,9 @@ bool projectileHitTargetRectangle(Vector2D projectilePosition, Vector2D targetBo
 
 void game_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame, Player *player);
 
-void game_keyDown(unsigned char key, int x, int y, Player *player);
-void game_keyUp(unsigned char key, int x, int y, Player *player);
-void game_specialKeyDown(int key, int x, int y, Player *player);
-void game_specialKeyUp(int key, int x, int y, Player *player);
+void game_keyboardDownFunc(unsigned char key, int x, int y, Player *player);
+void game_keyboardUpFunc(unsigned char key, int x, int y, Player *player);
+void game_specialKeyDownFunc(int key, int x, int y, Player *player);
+void game_specialKeyUpFunc(int key, int x, int y, Player *player);
 
 #endif // _GAME_H_
