@@ -26,9 +26,9 @@ void newTextureID (char* filename);
 
 GLuint getViewList(int position);
 
-void generateViewList( int width, int height, int z, int ratio, const float rgb[3]);
+void generateViewList( int width, int height, int x, int y, int z, int ratio, const float rgb[3]);
 
-void generateTextureViewList(GLuint id, int width, int height, int z, int ratio, const float vertices[4][2]);
+void generateTextureViewList(GLuint id, int width, int height, int x, int y, int z, int ratio, const float vertices[4][2], int modifyValue);
 
 /* mapSpriteSheet:
  * - receives a sprite sheet image as a parameter and the amount of sprites contained in it (w/ respective dimensions);
@@ -37,6 +37,6 @@ void generateTextureViewList(GLuint id, int width, int height, int z, int ratio,
  *   Obs.: ALL SPRITES IN A SPRITE SHEET MUST HAVE THE SAME DIMENSION.
  *   Inspiration: https://stackoverflow.com/questions/1568559/rendering-sprites-from-spritesheet-with-opengl
  */
-void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth, int sheetHeight, int ratio, int z);
+void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth, int sheetHeight, int ratio, int x, int y, int z, int modifyValue);
 
 #endif // _TEXTURE_H_

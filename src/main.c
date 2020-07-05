@@ -39,7 +39,7 @@ void initialize(){
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
     
-    //avoid ragged transitions by disabling linear texel filtering for mignification and using nearest instead                                                 
+    //avoid ragged transitions by disabling linear texel filtering for mignification/magnification and using nearest instead                                                 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -52,14 +52,14 @@ void initialize(){
     newTextureID("../assets/intro_mg2.png"); // 4
     newTextureID("../assets/starry_sky.png"); // 5
 
-    generateViewList(2000, 2000, 0, 1, rgb_white); //white background
+    generateViewList(2000, 2000, 0, 0, 0, 1, rgb_white); //white background
 
-    mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, 5); //player spritesheet
-    mapSpriteSheet(getTextureID(1), 1600, 1600, 3200, 1600, 10, 5); //enemy spritesheet
+    mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, 0, 0, 5, -1); //player spritesheet
+    mapSpriteSheet(getTextureID(1), 1600, 1600, 3200, 1600, 10, 0, 0, 5, -1); //enemy spritesheet
 
-    generateTextureViewList(getTextureID(2), 1000, 1000, 0, 1, defaultVertices); // intro background
-    generateTextureViewList(getTextureID(3), 1000, 1000, 1, 1, defaultVertices); // intro midground 1
-    generateTextureViewList(getTextureID(4), 1000, 1000, 2, 1, defaultVertices); // intro midground 2
+    generateTextureViewList(getTextureID(2), 1000, 1000, 0, 0, 0, 1, defaultVertices, -1); // intro background
+    generateTextureViewList(getTextureID(3), 1000, 1000, 0, 0, 1, 1, defaultVertices, -1); // intro midground 1
+    generateTextureViewList(getTextureID(4), 1000, 1000, 0, 0, 2, 1, defaultVertices, -1); // intro midground 2
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(0));
 
@@ -142,6 +142,20 @@ void drawScene_callback(){
 }
 
 void update_callback(){
+
+    switch (getPlayerState(&player))
+    {
+        case (right):
+             player_moveRight(&player);
+             break;
+        case (left):
+             player_moveLeft(&player);
+             break;
+
+    }
+
+    //it's necessary to redraw the whole spritesheet in order to keep up with the current player position.  
+    mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, getPlayerPositionX(&player), getPlayerPositionY(&player), 5, 1); 
     glutPostRedisplay();
 }
 
@@ -153,7 +167,7 @@ void keyDown_callback(unsigned char key, int x, int y){
             intro_keyboardDownFunc(key, x, y, &main_screenDef);
         break;
         case(game):
-            game_keyDown(key, x, y, &player);
+            game_keyboardDownFunc(key, x, y, &player);
         break;
         case(afterGame):
             //afterGame_pressedKey(key, x, y);
@@ -166,7 +180,7 @@ void keyUp_callback(unsigned char key, int x, int y){
 
     switch(main_screenDef){
         case(game):
-            game_keyUp(key, x, y, &player);
+            game_keyboardUpFunc(key, x, y, &player);
         break;
     }
 }
@@ -177,7 +191,7 @@ void specialKeyDown_callback(int key, int x, int y){
             intro_specialKeyDownFunc(key, x, y);
         break;
         case(game):
-            game_specialKeyDown(key, x, y, &player);
+            game_specialKeyDownFunc(key, x, y, &player);
         break;
     }
 }
@@ -185,7 +199,7 @@ void specialKeyDown_callback(int key, int x, int y){
 void specialKeyUp_callback(int key, int x, int y){
     switch(main_screenDef){
         case(game):
-            game_specialKeyUp(key, x, y, &player);
+            game_specialKeyUpFunc(key, x, y, &player);
         break;
     }
 }

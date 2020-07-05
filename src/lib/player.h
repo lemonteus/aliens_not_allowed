@@ -5,11 +5,13 @@
 
 #include "basicStructures.h"
 
+enum playerState {idle, right, left, shooting};
+
 struct{
     unsigned int healthPoints;
     unsigned int attackPoints;
     Entity entity;
-    bool isMoving;
+    enum playerState state;
     int speed;
     unsigned int textureID;
 } typedef Player;
@@ -24,6 +26,8 @@ int getPlayerInitialXPos();
 int getPlayerInitialYPos();
 
 int getPlayerSpeed();
+
+int getPlayerState();
 
 void player_modifyPositionX(Player *player, int amount);
 void player_modifyPositionY(Player *player, int amount);

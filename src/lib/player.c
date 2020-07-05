@@ -9,7 +9,7 @@
 #define PLAYER_DIMENSION_X 50
 #define PLAYER_DIMENSION_Y 50
 
-#define PLAYER_SPEED 10
+#define PLAYER_SPEED 5
 
 int getPlayerPositionX(Player *player)
 {
@@ -46,6 +46,11 @@ int getPlayerSpeed()
     return PLAYER_SPEED;
 }
 
+int getPlayerState(Player *player)
+{
+    return player->state;
+}
+
 void player_modifyPositionX(Player *player, int amount)
 {
     player->entity.position.x += amount;
@@ -61,7 +66,7 @@ void player_initialize(Player *player, int positionX, int positionY, unsigned in
     player->entity.position.x = positionX;
     player->entity.position.y = positionY;
 
-    player->isMoving = false;
+    player->state = idle;
     player->speed = PLAYER_SPEED;
 
     player->textureID = id;
@@ -69,8 +74,9 @@ void player_initialize(Player *player, int positionX, int positionY, unsigned in
 }
 
 void player_moveLeft(Player* player)
-{
+{   
     player_modifyPositionX(player, -player->speed);
+    
 }
 
 void player_moveRight(Player* player)
@@ -80,7 +86,7 @@ void player_moveRight(Player* player)
 
 void player_stopMoving (Player* player)
 {
-    player->isMoving = false;
+    player->state = idle;
 }
 
 

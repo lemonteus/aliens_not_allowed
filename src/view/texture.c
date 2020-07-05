@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -34,7 +35,7 @@ void newTextureID (char* filename){
     texCount++;      
 }
 
-void generateViewList(int width, int height, int z, int ratio, const float rgb[3]){
+void generateViewList(int width, int height, int x, int y, int z, int ratio, const float rgb[3]){
     //glClearColor(rgb[0], rgb[1], rgb[2], 0.0);
     glColor3f(1, 1, 1);
 
@@ -45,38 +46,45 @@ void generateViewList(int width, int height, int z, int ratio, const float rgb[3
     glNewList(viewLists[vlCount], GL_COMPILE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
-            glVertex3f(-width/(2 * ratio),-height/(2 * ratio), z);
-            glVertex3f(-width/(2 * ratio), height/(2 * ratio), z);
-            glVertex3f( width/(2 * ratio), height/(2 * ratio), z);
-            glVertex3f( width/(2 * ratio),-height/(2 * ratio), z);
+            glVertex3f(-width/(2 * ratio) + x,-height/(2 * ratio) + y, z);
+            glVertex3f(-width/(2 * ratio) + x, height/(2 * ratio) + y, z);
+            glVertex3f( width/(2 * ratio) + x, height/(2 * ratio) + y, z);
+            glVertex3f( width/(2 * ratio) + x,-height/(2 * ratio) + y, z);
         glEnd();
     glEndList();
 
     vlCount++;
 }
 
-void generateTextureViewList(GLuint id, int width, int height, int z, int ratio, const float vertices[4][2]){
+void generateTextureViewList(GLuint id, int width, int height, int x, int y, int z, int ratio, const float vertices[4][2], int modifyValue){
     viewLists[vlCount] = glGenLists(1);
 
-    //Create a new display list and compile it
-    glNewList(viewLists[vlCount], GL_COMPILE);
+    if (modifyValue == -1)
+        //Create a new display list and compile it
+        glNewList(viewLists[vlCount], GL_COMPILE);
+    else
+        //Modify existing display list according to the value of modifyValue
+        glNewList(viewLists[modifyValue], GL_COMPILE);
+    
         glBindTexture(GL_TEXTURE_2D, id);
         glBegin(GL_POLYGON);
             glTexCoord2fv(vertices[0]); 
-            glVertex3f(-width/(2 * ratio), -height/(2 * ratio), z);
+            glVertex3f(-width/(2 * ratio) + x, -height/(2 * ratio) + y, z);
 
             glTexCoord2fv(vertices[1]); 
-            glVertex3f(-width/(2 * ratio),  height/(2 * ratio), z);
+            glVertex3f(-width/(2 * ratio) + x,  height/(2 * ratio) + y, z);
 
             glTexCoord2fv(vertices[2]); 
-            glVertex3f( width/(2 * ratio),  height/(2 * ratio), z);
+            glVertex3f( width/(2 * ratio) + x,  height/(2 * ratio) + y, z);
 
             glTexCoord2fv(vertices[3]); 
-            glVertex3f( width/(2 * ratio), -height/(2 * ratio), z);
+            glVertex3f( width/(2 * ratio) + x, -height/(2 * ratio) + y, z);
         glEnd();
     glEndList();
 
-    vlCount++;
+    if (modifyValue == -1)
+        vlCount++;       
+    
 }
 
 /* mapSpriteSheet:
@@ -86,12 +94,14 @@ void generateTextureViewList(GLuint id, int width, int height, int z, int ratio,
  *   Obs.: ALL SPRITES IN A SPRITE SHEET MUST HAVE THE SAME DIMENSION.
  *   Inspiration: https://stackoverflow.com/questions/1568559/rendering-sprites-from-spritesheet-with-opengl
  */
-void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth, int sheetHeight, int ratio, int z){
+void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth, int sheetHeight, int ratio, int x, int y, int z, int modifyValue){
     /* Variables meanings:
      *   id: texture's id to the sprite sheet to be mapped
      *   spriteWidth & spriteHeight: width & height for each sprite
      *   sheetWidth  & sheetHeight : width & height of the sprite sheet
      *   ratio: the ratio in which each sprite is going to be displayed. Bigger the value, smaller the texture.
+     *   x: x position
+     *   y: y position
      *   z: the z-coordinate [-10, 10]
      */
 
@@ -122,8 +132,8 @@ void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth
         
         /* "ty" stands for "Texture Y"
          *
-         * It recieves the result of the division of the sprite intex by the amount of spriter per row
-         *   ( it's casted to int to pick up the whole number and separete from decimals )
+         * It recieves the result of the division of the sprite index by the amount of sprites per row
+         *   ( it's casted to int so it's always truncated)
          * then multiply it by texture height (th) in order to scale it
          * 
          * e.g.: index = 6 -> (6-1)/4 = 1 (row index)/4 = 0.25 -> x coordinate of sprite with index 6 starts at 0.25. 
@@ -137,6 +147,10 @@ void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth
             {tx+tw,  ty  }
         };
 
-        generateTextureViewList(id, spriteWidth, spriteHeight, z, ratio, vertices);
+        if (modifyValue == -1)
+            generateTextureViewList(id, spriteWidth, spriteHeight, x, y, z, ratio, vertices, -1);
+        else
+            generateTextureViewList(id, spriteWidth, spriteHeight, x, y, z, ratio, vertices, modifyValue+frameIndex-1);
+        
     }
 }

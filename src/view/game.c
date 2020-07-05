@@ -27,7 +27,7 @@ bool projectileHitTargetRectangle(Vector2D projectilePosition, Vector2D targetBo
 
 void game_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame, Player *player)
 {
-    
+
     //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glCallList(getViewList(0)); //white background
 
@@ -38,7 +38,7 @@ void game_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame, 
     glDisable(GL_TEXTURE_2D);
 }
 
-void game_keyDown(unsigned char key, int x, int y, Player* player)
+void game_keyboardDownFunc(unsigned char key, int x, int y, Player* player)
 {
     switch (key)
     {
@@ -55,7 +55,7 @@ void game_keyDown(unsigned char key, int x, int y, Player* player)
     }
 }
 
-void game_keyUp(unsigned char key, int x, int y, Player* player)
+void game_keyboardUpFunc(unsigned char key, int x, int y, Player* player)
 {
     switch (key)
     {
@@ -69,27 +69,29 @@ void game_keyUp(unsigned char key, int x, int y, Player* player)
 }
 
 
-void game_specialKeyDown(int key, int x, int y, Player* player)
+void game_specialKeyDownFunc(int key, int x, int y, Player* player)
 {
     switch (key)
     {
-        case 102: //right
-            player_moveRight(player);
+        case (GLUT_KEY_RIGHT):
+            player->state = right;
+            //printf("%d", getPlayerPositionX());
             break;
 
-        case 100: //left
-            player_moveLeft(player);
+        case (GLUT_KEY_LEFT): 
+            player->state = left;
             break;
     }
+    //glutPostRedisplay();
 }
 
-void game_specialKeyUp(int key, int x, int y, Player* player)
+void game_specialKeyUpFunc(int key, int x, int y, Player* player)
 {
     switch (key)
     {
-        case 102: //right
-        case 100: //left
-            player_stopMoving(player);
+        case (GLUT_KEY_RIGHT):
+        case (GLUT_KEY_LEFT): 
+            player->state = idle;
             break;
     }
 }
