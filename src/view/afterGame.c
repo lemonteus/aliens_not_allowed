@@ -66,7 +66,6 @@ void afterGame_internal_drawButtons(){
             glVertex3f(x        , y - height, z); // bottom-left
         glEnd();
     }
-
 }
 
 void afterGame_internal_initialize(){
@@ -123,11 +122,15 @@ void afterGame_drawScene(bool playerWonTheGame){
     glCallList(getViewList(8));
     glCallList(getViewList(9));
 
+    glCallList(getViewList(10));
+    glCallList(getViewList(11));
+    glCallList(getViewList(12));
+    
     glDisable(GL_TEXTURE_2D);  
 
     glColor3f(0.0, 0.0, 0.0);
     if (playerWonTheGame)
-        drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "VITÓRIA!", 0, 140, 5);
+        drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "VITORIA!", 0, 140, 5);
     else
         drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "DERROTA!", 0, 140, 5);
     
@@ -167,7 +170,37 @@ void afterGame_mousePassiveFunc(int x, int y, bool mouseInBounds){
     }
 }
 
-void afterGame_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBounds, enum basicStructures_screen *screenDef);
+void afterGame_mouseActiveFunc(int button, int state, int x, int y, bool mouseInBounds, enum basicStructures_screen *screenDef){
+    if(mouseInBounds){
+        int buttonDimensions = afterGame_buttons[0].dimensions.x; // all widths and heights are the same
+
+        for(int i = 0; i < 3; i++){
+            int buttonY = afterGame_buttons[i].position.y;
+            int buttonX = afterGame_buttons[i].position.x;
+
+            if(x >= buttonX && x <= (buttonX + buttonDimensions)){
+                if(y <= buttonY && y >= (buttonY - buttonDimensions))
+                    afterGame_selectedButton = i+1;
+                
+                if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
+                    switch(afterGame_selectedButton){
+                        case(retry):
+                            *screenDef = game;
+                            afterGame_reset = true;
+                        break;
+                        case(menu):
+                            *screenDef = intro;
+                            afterGame_reset = true;
+                        break;
+                        case(quit):
+                            exit(0);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
 
 void afterGame_keyboardDownFunc(int key, int x, int y, enum basicStructures_screen *screenDef){
     if(key == 13 || key == 32){ // Enter || Spacebar

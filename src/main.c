@@ -48,10 +48,17 @@ void initialize(){
 
     newTextureID("../assets/player_spaceship.png"); // 0
     newTextureID("../assets/purple_enemy.png"); // 1
-    newTextureID("../assets/intro_bg.png");  // 2
-    newTextureID("../assets/intro_mg1.png"); // 3
-    newTextureID("../assets/intro_mg2.png"); // 4
-    newTextureID("../assets/starry_sky.png"); // 5
+
+    newTextureID("../assets/intro_bg.png");     // 2
+    newTextureID("../assets/intro_mg1.png");    // 3
+    newTextureID("../assets/intro_mg2.png");    // 4
+    newTextureID("../assets/starry_sky.png");   // 5
+    
+    //AfterGame icons
+    newTextureID("../assets/icons/replay.png");   // 6
+    newTextureID("../assets/icons/menu.png");   // 7
+    newTextureID("../assets/icons/quit.png");  // 8
+
 
     generateViewList(2000, 2000, 0, 0, 0, 1, rgb_white); //white background
 
@@ -62,9 +69,13 @@ void initialize(){
     generateTextureViewList(getTextureID(3), 1000, 1000, 0, 0, 1, 1, defaultVertices, -1); // intro midground 1
     generateTextureViewList(getTextureID(4), 1000, 1000, 0, 0, 2, 1, defaultVertices, -1); // intro midground 2
 
+    generateTextureViewList(getTextureID(6), 150, 150, -200, 0, 7, 1, defaultVertices, -1); // afterGame icon: menu
+    generateTextureViewList(getTextureID(7), 150, 150,   0,  0, 7, 1, defaultVertices, -1); // afterGame icon: quit
+    generateTextureViewList(getTextureID(8), 150, 150,  200, 0, 7, 1, defaultVertices, -1); // afterGame icon: replay
+
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(0));
 
-    main_screenDef = intro;
+    main_screenDef = afterGame;
     main_startNewGame = false;
 }
 
@@ -232,10 +243,10 @@ void mouseActiveFunc_callback(int button, int state, int x, int y){
             intro_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_screenDef);
         break;
         case game:
-            //game_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
+            //game_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_screenDef);
         break;
         case afterGame:
-            //afterGame_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_startNewGame);;
+            afterGame_mouseActiveFunc(button, state, translatedCoordinates.x, translatedCoordinates.y, mouseInBounds, &main_screenDef);
         break;
     }
 }

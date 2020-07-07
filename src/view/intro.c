@@ -158,39 +158,39 @@ void intro_internal_drawOverlays(){
         glColor4f(1.0, 1.0, 1.0, 1.0);
         switch(intro_currentState){
             case(stateControls):
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CONTROLS", x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CONTROLES", x, y, z);
 
                 x += 10;
                 y -= 50;
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Directional arrors :", x, y, z);
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "move horizontally the spaceship", 0, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Setas direcionais :", x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "mover horizontalmente a nave", 0, y, z);
 
                 y-= lineSpacing;
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "P button :", x, y, z);
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "pause/resume game", 0, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Tecla P :", x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "parar/continuar jogo", 0, y, z);
 
                 y-= lineSpacing;
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "R button :", x, y, z);
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "restart game", 0, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Tecla R :", x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "reiniciar jogo", 0, y, z);
 
                 y-= lineSpacing;
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "ESC :", x, y, z);
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "quit game", 0, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Tecla ESC :", x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "sair do jogo", 0, y, z);
             break;
             case(stateCredits):
                drawText_GLUT(GLUT_BITMAP_HELVETICA_18, "CREDITS", x, y, z);
 
                 x += 10;
                 y -= 50;
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Developers :", x, y, z);
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Pedro Vaz and Mateus Lemos", 0, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Desenvolvedores :", x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Pedro Vaz e Mateus Lemos", 0, y, z);
 
                 y-= lineSpacing;
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Mentor :", x, y, z);
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Flavio Coutinho", 0, y, z);
 
                 y-= lineSpacing;
-                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Source code :", x, y, z);
+                drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "Codigo fonte :", x, y, z);
                 drawText_GLUT(GLUT_BITMAP_HELVETICA_12, "github.com/HoloVaz/TP1-Galaxian", 0, y, z);
             break;
         }
