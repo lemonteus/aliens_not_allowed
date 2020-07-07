@@ -66,6 +66,7 @@ void afterGame_internal_drawButtons(){
             glVertex3f(x        , y - height, z); // bottom-left
         glEnd();
     }
+    glColor3f(1.0, 1.0, 1.0);
 }
 
 void afterGame_internal_initialize(){
@@ -114,18 +115,19 @@ void afterGame_drawScene(bool playerWonTheGame){
     if(afterGame_reset)
         afterGame_internal_initialize();
 
-    glColor3f(1.0, 1.0, 1.0);
     glEnable(GL_TEXTURE_2D);
+        glCallList(getViewList(7));
+        afterGame_updateStarrySky();
+        glCallList(getViewList(8));
+        glCallList(getViewList(9));
+    glDisable(GL_TEXTURE_2D);  
 
-    glCallList(getViewList(7));
-    afterGame_updateStarrySky();
-    glCallList(getViewList(8));
-    glCallList(getViewList(9));
+    afterGame_internal_drawButtons();
 
-    glCallList(getViewList(10));
-    glCallList(getViewList(11));
-    glCallList(getViewList(12));
-    
+    glEnable(GL_TEXTURE_2D);
+        glCallList(getViewList(10));
+        glCallList(getViewList(11));
+        glCallList(getViewList(12));
     glDisable(GL_TEXTURE_2D);  
 
     glColor3f(0.0, 0.0, 0.0);
@@ -134,8 +136,6 @@ void afterGame_drawScene(bool playerWonTheGame){
     else
         drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "DERROTA!", 0, 140, 5);
     
-    afterGame_internal_drawButtons();
-
     glColor3f(1.0, 1.0, 1.0);
     glFlush();
 }

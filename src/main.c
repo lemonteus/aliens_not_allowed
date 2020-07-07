@@ -75,7 +75,7 @@ void initialize(){
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(0));
 
-    main_screenDef = afterGame;
+    main_screenDef = intro;
     main_startNewGame = false;
 }
 
