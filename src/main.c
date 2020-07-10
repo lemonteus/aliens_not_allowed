@@ -49,16 +49,16 @@ void initialize(){
     newTextureID("../assets/player_spaceship.png"); // 0
     newTextureID("../assets/purple_enemy.png"); // 1
 
-    newTextureID("../assets/intro_bg.png");     // 2
-    newTextureID("../assets/intro_mg1.png");    // 3
-    newTextureID("../assets/intro_mg2.png");    // 4
-    newTextureID("../assets/starry_sky.png");   // 5
+    newTextureID("../assets/intro_bg.png");    // 2
+    newTextureID("../assets/intro_mg1.png");   // 3
+    newTextureID("../assets/intro_mg2.png");   // 4
+    newTextureID("../assets/starry_sky.png");  // 5
     
     //AfterGame icons
-    newTextureID("../assets/icons/replay.png");   // 6
-    newTextureID("../assets/icons/menu.png");   // 7
+    newTextureID("../assets/icons/replay.png");// 6
+    newTextureID("../assets/icons/menu.png");  // 7
     newTextureID("../assets/icons/quit.png");  // 8
-
+    newTextureID("../assets/logo.png");        // 9
 
     generateViewList(2000, 2000, 0, 0, 0, 1, rgb_white); //white background
 
@@ -72,6 +72,8 @@ void initialize(){
     generateTextureViewList(getTextureID(6), 150, 150, -200, 0, 7, 1, defaultVertices, -1); // afterGame icon: menu
     generateTextureViewList(getTextureID(7), 150, 150,   0,  0, 7, 1, defaultVertices, -1); // afterGame icon: quit
     generateTextureViewList(getTextureID(8), 150, 150,  200, 0, 7, 1, defaultVertices, -1); // afterGame icon: replay
+
+    generateTextureViewList(getTextureID(9), 520, 520,  0, 215, 7, 1, defaultVertices, -1); // game logo
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(0));
 
@@ -270,7 +272,7 @@ int main(int argc, char **argv){
     glutInitWindowSize( 500, 500 );
     glutInitWindowPosition( 50, 50 );
 
-    glutCreateWindow( "TP1 - Galaxian: Pedro Vaz e Mateus Lemos" );
+    glutCreateWindow( "Aliens Not Allowed - Pedro Vaz e Mateus Lemos" );
 
     glutDisplayFunc(drawScene_callback);
     glutReshapeFunc(reshape_callback);

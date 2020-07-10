@@ -213,32 +213,18 @@ void intro_drawScene(){
 
     glColor3f(1.0, 1.0, 1.0);
     glEnable(GL_TEXTURE_2D);
-
-    glCallList(getViewList(7));
-    intro_internal_updateStarrySky();
-    glCallList(getViewList(8));
-    glCallList(getViewList(9));
-
-    //glCallList(getViewList(10));
+        glCallList(getViewList(7));
+        intro_internal_updateStarrySky();
+        glCallList(getViewList(8));
+        glCallList(getViewList(9));
+        glCallList(getViewList(13));
     glDisable(GL_TEXTURE_2D);  
-    glFlush();
     
-    // logo's triangle
-    glColor3f(0.0, 0.0, 0.0);
-    glBegin(GL_TRIANGLES);
-        glVertex3f(-400, 350,  4);
-        glVertex3f( 400, 350,  4);
-        glVertex3f(  0 ,  20,  4);
-    glEnd();
-
-    // game title on screen
-    glColor3f(1.0, 1.0, 1.0);
-    drawTextCentralized_GLUT(GLUT_BITMAP_TIMES_ROMAN_24, "TP1 - GALAXIAN", 0, 200, 6);
-
     intro_internal_drawStateMainButtons();
     intro_internal_drawOverlays();
     
     glColor3f(1.0, 1.0, 1.0);
+    glFlush();
 }
 
 void intro_specialKeyDownFunc(int key, int x, int y){
