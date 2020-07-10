@@ -7,14 +7,14 @@
 
 enum playerState {idle, right, left, shooting};
 
-struct{
+typedef struct{
     unsigned int healthPoints;
     unsigned int attackPoints;
     Entity entity;
     enum playerState state;
     int speed;
     unsigned int textureID;
-} typedef Player;
+} Player;
 
 int getPlayerDimensionX();
 int getPlayerDimensionY();
