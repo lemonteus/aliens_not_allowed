@@ -35,7 +35,7 @@ void newTextureID (char* filename){
     texCount++;      
 }
 
-void generateViewList(int width, int height, int x, int y, int z, int ratio, const float rgb[3]){
+void generateViewList(int width, int height, int x, int y, int z, float ratio, const float rgb[3]){
     //glClearColor(rgb[0], rgb[1], rgb[2], 0.0);
     glColor3f(1, 1, 1);
 
@@ -46,17 +46,17 @@ void generateViewList(int width, int height, int x, int y, int z, int ratio, con
     glNewList(viewLists[vlCount], GL_COMPILE);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
-            glVertex3f(-width/(2 * ratio) + x,-height/(2 * ratio) + y, z);
-            glVertex3f(-width/(2 * ratio) + x, height/(2 * ratio) + y, z);
-            glVertex3f( width/(2 * ratio) + x, height/(2 * ratio) + y, z);
-            glVertex3f( width/(2 * ratio) + x,-height/(2 * ratio) + y, z);
+            glVertex3f(-width/(2.0 * ratio) + x,-height/(2.0 * ratio) + y, z);
+            glVertex3f(-width/(2.0 * ratio) + x, height/(2.0 * ratio) + y, z);
+            glVertex3f( width/(2.0 * ratio) + x, height/(2.0 * ratio) + y, z);
+            glVertex3f( width/(2.0 * ratio) + x,-height/(2.0 * ratio) + y, z);
         glEnd();
     glEndList();
 
     vlCount++;
 }
 
-void generateTextureViewList(GLuint id, int width, int height, int x, int y, int z, int ratio, const float vertices[4][2], int modifyValue){
+void generateTextureViewList(GLuint id, int width, int height, int x, int y, int z, float ratio, const float vertices[4][2], int modifyValue){
     viewLists[vlCount] = glGenLists(1);
 
     if (modifyValue == -1)
@@ -69,16 +69,16 @@ void generateTextureViewList(GLuint id, int width, int height, int x, int y, int
         glBindTexture(GL_TEXTURE_2D, id);
         glBegin(GL_POLYGON);
             glTexCoord2fv(vertices[0]); 
-            glVertex3f(-width/(2 * ratio) + x, -height/(2 * ratio) + y, z);
+            glVertex3f(-width/(2.0 * ratio) + x, -height/(2.0 * ratio) + y, z);
 
             glTexCoord2fv(vertices[1]); 
-            glVertex3f(-width/(2 * ratio) + x,  height/(2 * ratio) + y, z);
+            glVertex3f(-width/(2.0 * ratio) + x,  height/(2.0 * ratio) + y, z);
 
             glTexCoord2fv(vertices[2]); 
-            glVertex3f( width/(2 * ratio) + x,  height/(2 * ratio) + y, z);
+            glVertex3f( width/(2.0 * ratio) + x,  height/(2.0 * ratio) + y, z);
 
             glTexCoord2fv(vertices[3]); 
-            glVertex3f( width/(2 * ratio) + x, -height/(2 * ratio) + y, z);
+            glVertex3f( width/(2.0 * ratio) + x, -height/(2.0 * ratio) + y, z);
         glEnd();
     glEndList();
 
@@ -94,7 +94,7 @@ void generateTextureViewList(GLuint id, int width, int height, int x, int y, int
  *   Obs.: ALL SPRITES IN A SPRITE SHEET MUST HAVE THE SAME DIMENSION.
  *   Inspiration: https://stackoverflow.com/questions/1568559/rendering-sprites-from-spritesheet-with-opengl
  */
-void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth, int sheetHeight, int ratio, int x, int y, int z, int modifyValue){
+void mapSpriteSheet(GLuint id, int spriteWidth, int spriteHeight, int sheetWidth, int sheetHeight, float ratio, int x, int y, int z, int modifyValue){
     /* Variables meanings:
      *   id: texture's id to the sprite sheet to be mapped
      *   spriteWidth & spriteHeight: width & height for each sprite
