@@ -3,10 +3,23 @@
 
 #include "basicStructures.h"
 
-struct{
-    unsigned int healthPoints;
-    unsigned int attackPoints;
+typedef struct{
+    unsigned short int enemyID; // A unique identification to the enemy
+    unsigned short int healthPoints;
+    unsigned short int attackPoints;
+    Vector2D dimensions;
     Vector2D position;
-} typedef Enemy;
+} Enemy;
+
+
+void enemy_update();
+
+// To be used in order update the player's health points
+Vector2D* enemy_getProjectiles();
+
+// To be called whenever an enemy got hit
+void enemy_gotHit(unsigned int enemyID, unsigned int attackPoints);
+Enemy* enemy_getEnemies();
+
 
 #endif //_ENEMY_H_
