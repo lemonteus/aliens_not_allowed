@@ -36,7 +36,6 @@ void newTextureID (char* filename){
 }
 
 void generateViewList(int width, int height, int x, int y, int z, float ratio, const float rgb[3]){
-    //glClearColor(rgb[0], rgb[1], rgb[2], 0.0);
     glColor3f(1, 1, 1);
 
     //generate a contiguous empty display list
@@ -44,7 +43,6 @@ void generateViewList(int width, int height, int x, int y, int z, float ratio, c
 
     //Creates a new display list, compile it and stores at viewLists[vlCount]
     glNewList(viewLists[vlCount], GL_COMPILE);
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glBegin(GL_POLYGON);
             glVertex3f(-width/(2.0 * ratio) + x,-height/(2.0 * ratio) + y, z);
             glVertex3f(-width/(2.0 * ratio) + x, height/(2.0 * ratio) + y, z);
