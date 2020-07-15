@@ -169,7 +169,7 @@ void update_callback(){
     }
 
     //it's necessary to redraw the whole spritesheet in order to keep up with the current player position.  
-    mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 10, getPlayerPositionX(&player), getPlayerPositionY(&player), 5, 1); 
+    mapSpriteSheet(getTextureID(0), 1600, 1600, 6400, 1600, 15, getPlayerPositionX(&player), getPlayerPositionY(&player), 5, 1); 
     glutPostRedisplay();
 }
 
@@ -200,6 +200,8 @@ void keyUp_callback(unsigned char key, int x, int y){
 }
 
 void specialKeyDown_callback(int key, int x, int y){
+    specialKeyState[key] = true;
+
     switch(main_screenDef){
         case(intro):
             intro_specialKeyDownFunc(key, x, y);
@@ -214,6 +216,8 @@ void specialKeyDown_callback(int key, int x, int y){
 }
 
 void specialKeyUp_callback(int key, int x, int y){
+    specialKeyState[key] = false;
+
     switch(main_screenDef){
         case(game):
             game_specialKeyUpFunc(key, x, y, &player);

@@ -28,7 +28,6 @@ bool projectileHitTargetRectangle(Vector2D projectilePosition, Vector2D targetBo
 void game_drawScene(enum basicStructures_screen *screenDef, bool *startNewGame, Player *player)
 {
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glCallList(getViewList(0)); //white background
 
     //player
@@ -44,12 +43,12 @@ void game_keyboardDownFunc(unsigned char key, int x, int y, Player* player)
     {
         case 'A':
         case 'a':
-            player_moveLeft(player);
+            player->state = left;
             break;
 
         case 'D':
         case 'd':
-            player_moveRight(player);
+            player->state = right;
             break;
             
     }
@@ -61,9 +60,18 @@ void game_keyboardUpFunc(unsigned char key, int x, int y, Player* player)
     {
         case 'A':
         case 'a':
+            if (keyState['D']||keyState['d'])
+                player->state = right;
+            else
+                player->state = idle;
+            
+            break;
         case 'D':
         case 'd':
-            player_stopMoving(player);
+            if (keyState['A']||keyState['a'])
+                player->state = left;
+            else
+                player->state = idle;
             break;
     }
 }
@@ -71,27 +79,36 @@ void game_keyboardUpFunc(unsigned char key, int x, int y, Player* player)
 
 void game_specialKeyDownFunc(int key, int x, int y, Player* player)
 {
+
     switch (key)
     {
         case (GLUT_KEY_RIGHT):
             player->state = right;
-            //printf("%d", getPlayerPositionX());
             break;
 
         case (GLUT_KEY_LEFT): 
             player->state = left;
             break;
     }
-    //glutPostRedisplay();
 }
 
 void game_specialKeyUpFunc(int key, int x, int y, Player* player)
 {
+   
     switch (key)
     {
         case (GLUT_KEY_RIGHT):
-        case (GLUT_KEY_LEFT): 
-            player->state = idle;
+            if (specialKeyState[GLUT_KEY_LEFT])
+                player->state = left;
+            else
+                player->state = idle;
+            break;
+
+        case (GLUT_KEY_LEFT):
+            if (specialKeyState[GLUT_KEY_RIGHT])
+                player->state = right;
+            else
+                player->state = idle;
             break;
     }
 }
