@@ -73,7 +73,7 @@ void initialize(){
     generateTextureViewList(getTextureID(7), 150, 150,   0,  0, 7, 1, defaultVertices, -1); // afterGame icon: quit
     generateTextureViewList(getTextureID(8), 150, 150,  200, 0, 7, 1, defaultVertices, -1); // afterGame icon: replay
 
-    generateTextureViewList(getTextureID(9), 520, 520,  0, 215, 7, 1, defaultVertices, -1); // game logo
+    generateTextureViewList(getTextureID(9), 803, 321,  0, 215, 7, 0.9, defaultVertices, -1); // game logo
 
     player_initialize(&player, 0, -PLAYER_INITIAL_Y_POS, getTextureID(0));
 
