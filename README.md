@@ -8,7 +8,7 @@ A game developed with [OpenGL](https://www.opengl.org/), [Freeglut](http://freeg
 - Teacher/Mentor: [Flávio Coutinho](https://github.com/fegemo).
 
 ## Setting Up Environment (Ubuntu based) :
-To run and edit this project is necessary to install the following resources:
+To compile and run this project, the following resources are required:
 - FreeGlut: `sudo apt install freeglut3-dev`
 - GCC: `sudo apt install gcc`
 - GLEW: `sudo apt install libglew-dev`
