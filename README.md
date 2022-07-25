@@ -1,8 +1,6 @@
 # TP1 - Galaxian
 A game developed with [OpenGL](https://www.opengl.org/), [Freeglut](http://freeglut.sourceforge.net/) and C Language as a Computer Graphics' project @ [Cefet-MG](http://www.cefetmg.br), based on [Galaxian](https://en.wikipedia.org/wiki/Galaxian).
 
-## About:
-
 ## Credits:
 - Developers: [Pedro Vaz](https://github.com/holoVaz) and [Mateus Lemos](https://github.com/lemonteus);
 - Teacher/Mentor: [Flávio Coutinho](https://github.com/fegemo).
